@@ -1,0 +1,83 @@
+/* Claim Page Container */
+.claim-container {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f7f7f7;
+}
+
+/* Card */
+.claim-card {
+  width: 100%;
+  max-width: 480px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+.claim-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+/* Form */
+.claim-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Label */
+.claim-form label {
+  font-weight: 500;
+  color: #444;
+}
+
+/* Textarea */
+.claim-form textarea {
+  resize: none;
+  min-height: 120px;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.claim-form textarea:focus {
+  border-color: #58B6AE;
+}
+
+/* Button */
+.claim-form button {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #58B6AE;
+  border: none;
+  color: white;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.claim-form button:hover {
+  background-color: #4aa79f;
+}
+
+.claim-form button:disabled {
+  background-color: #b7dedd;
+  cursor: not-allowed;
+}
+
+/* Info text */
+.claim-info {
+  font-size: 13px;
+  color: #666;
+  margin-top: 10px;
+  text-align: center;
+}

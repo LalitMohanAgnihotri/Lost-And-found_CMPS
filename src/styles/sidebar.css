@@ -1,0 +1,36 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 260px;
+  background-color: white;
+  padding: 1.5rem;
+  z-index: 1050;
+  transition: transform 0.3s ease;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+  color: #58B6AE;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 1rem;
+}
+
+.sidebar-nav a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 500;
+}
+
+.sidebar-nav a.active {
+  color: #58B6AE;
+  font-weight: 600;
+}

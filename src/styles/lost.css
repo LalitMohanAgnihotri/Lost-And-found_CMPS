@@ -1,0 +1,154 @@
+/* ================= BASE ================= */
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f2f2;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* ================= CONTAINER ================= */
+
+.lost-container {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-weight: 700;
+}
+
+/* ================= GRID ================= */
+
+.lost-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 992px) {
+  .lost-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .lost-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================= CARD ================= */
+
+.lost-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.lost-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.14);
+}
+
+/* ================= IMAGE ================= */
+
+.lost-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.6s ease, filter 0.6s ease;
+}
+
+.lost-card:hover .lost-image {
+  transform: scale(1.04);
+  filter: brightness(1.03);
+}
+
+/* ================= BODY ================= */
+
+.lost-body {
+  padding: 1.4rem 1.5rem 1.6rem;
+}
+
+.lost-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #222;
+}
+
+.lost-desc {
+  font-size: 0.9rem;
+  color: #6b6b6b;
+  line-height: 1.6;
+  margin-bottom: 0.9rem;
+}
+
+.lost-body p {
+  font-size: 0.85rem;
+  color: #444;
+  margin-bottom: 0.4rem;
+}
+
+/* ================= STATUS ================= */
+
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.status.resolved {
+  background: #d1f7e1;
+  color: #0f5132;
+}
+
+.status.unresolved {
+  background: #ffe4e6;
+  color: #842029;
+}
+
+/* ================= CLAIM BUTTON ================= */
+
+.claim-btn {
+  display: inline-block;
+  margin-top: 1.2rem;     /* 👈 top spacing */
+
+  padding: 0.45rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  border-radius: 999px;
+  border: none;
+
+  background-color: #41bcb2;
+  color: #ffffff !important;
+  text-decoration: none;
+
+  box-shadow: 0 6px 14px rgba(65, 188, 178, 0.35);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover */
+.claim-btn:hover {
+  background-color: #36b1a7;
+  transform: translateY(-2px);
+}
+
+/* Click */
+.claim-btn:active {
+  transform: translateY(0);
+}
+

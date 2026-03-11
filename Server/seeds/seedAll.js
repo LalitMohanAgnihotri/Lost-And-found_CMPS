@@ -7,7 +7,7 @@ import Found from "../models/Found.js";
 import sampleLost from "./lost.seed.js";
 import sampleFound from "./found.seed.js";
 
-dotenv.config({ path: "../../.env" });
+dotenv.config({ path: "../.env" });
 
 const seedAll = async () => {
   try {
@@ -25,7 +25,7 @@ const seedAll = async () => {
     console.log("Lost & Found data seeded successfully");
     process.exit();
   } catch (error) {
-    console.error("❌ Seeding failed:", error);
+    console.error("Seeding failed:", error);
     process.exit(1);
   }
 };

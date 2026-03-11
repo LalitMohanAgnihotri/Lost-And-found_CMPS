@@ -13,6 +13,7 @@ import Lost from "./pages/Lost";
 import Found from "./pages/Found";
 import ReportLost from "./pages/ReportLost";
 import ReportFound from "./pages/ReprotFound";
+import Search from "./pages/Search";
 import Claim from "./pages/Claim";
 
 import Login from "./pages/Login";
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/found-items" element={<Found />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/search" element={<Search />} />
 
         {/* 🔒 PROTECTED ROUTES */}
         <Route
@@ -75,3 +77,5 @@ const App = () => {
 };
 
 export default App;
+
+// mongod --dbpath D:\mongodb\data                   

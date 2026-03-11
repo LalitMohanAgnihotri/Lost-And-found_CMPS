@@ -1,6 +1,7 @@
-const ReportLost = () => {
-  return (
-    <h1 className="text-center mt-5">Report Lost Items Page - Coming Soon!</h1>
-  )
-};
+import ReportItem from "../components/ReportItem";
+
+function ReportLost() {
+  return <ReportItem type="lost" />;
+}
+
 export default ReportLost;

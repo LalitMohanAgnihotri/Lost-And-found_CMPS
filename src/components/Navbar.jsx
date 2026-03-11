@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { isLoggedIn } from "../utils/auth";
 
 import Profile from "./Profile";
@@ -7,11 +7,25 @@ import styles from "./Navbar.module.css";
 
 const Navbar = ({ toggleSidebar }) => {
   const [searchMode, setSearchMode] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
   const loggedIn = isLoggedIn();
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+      if (search.trim()) {
+        navigate(`/search?q=${search}`);
+        setSearch("");
+      }
+    }
+  };
 
   return (
     <header className={`navbar ${styles.navbar}`}>
-      {/* LEFT */}
+
       {!searchMode && (
         <div className={styles.brand}>
           <button
@@ -21,7 +35,6 @@ const Navbar = ({ toggleSidebar }) => {
             ☰
           </button>
 
-          {/* LOGO + BRAND */}
           <Link
             to="/"
             className="text-decoration-none d-flex align-items-center gap-2"
@@ -39,78 +52,50 @@ const Navbar = ({ toggleSidebar }) => {
         </div>
       )}
 
-      {/* NAV LINKS (DESKTOP) */}
       {!searchMode && (
         <ul className={`d-none d-lg-flex ${styles.navLinks}`}>
           <li>
-            <NavLink
-              to="/"
-              end
-              className={({ isActive }) =>
-                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-              }
-            >
+            <NavLink to="/" end className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }>
               Home
             </NavLink>
           </li>
 
-          <>
-            <li>
-              <NavLink
-                to="/lost-items"
-                className={({ isActive }) =>
-                  isActive
-                    ? `${styles.navLink} ${styles.active}`
-                    : styles.navLink
-                }
-              >
-                Lost Items
-              </NavLink>
-            </li>
+          <li>
+            <NavLink to="/lost-items" className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }>
+              Lost Items
+            </NavLink>
+          </li>
 
-            <li>
-              <NavLink
-                to="/found-items"
-                className={({ isActive }) =>
-                  isActive
-                    ? `${styles.navLink} ${styles.active}`
-                    : styles.navLink
-                }
-              >
-                Found Items
-              </NavLink>
-            </li>
+          <li>
+            <NavLink to="/found-items" className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }>
+              Found Items
+            </NavLink>
+          </li>
 
-            <li>
-              <NavLink
-                to="/report-lost"
-                className={({ isActive }) =>
-                  isActive
-                    ? `${styles.navLink} ${styles.active}`
-                    : styles.navLink
-                }
-              >
-                Report Lost
-              </NavLink>
-            </li>
+          <li>
+            <NavLink to="/report-lost" className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }>
+              Report Lost
+            </NavLink>
+          </li>
 
-            <li>
-              <NavLink
-                to="/report-found"
-                className={({ isActive }) =>
-                  isActive
-                    ? `${styles.navLink} ${styles.active}`
-                    : styles.navLink
-                }
-              >
-                Report Found
-              </NavLink>
-            </li>
-          </>
+          <li>
+            <NavLink to="/report-found" className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }>
+              Report Found
+            </NavLink>
+          </li>
         </ul>
       )}
 
-      {/* MOBILE SEARCH */}
       {searchMode && (
         <div className={styles.mobileSearch}>
           <button
@@ -119,30 +104,34 @@ const Navbar = ({ toggleSidebar }) => {
           >
             ←
           </button>
+
           <input
             type="search"
             className={`form-control ${styles.searchInput}`}
             placeholder="Search items..."
             autoFocus
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleSearch}
           />
         </div>
       )}
 
-      {/* DESKTOP SEARCH */}
       {!searchMode && (
         <form className={`d-none d-lg-flex ${styles.searchForm}`}>
           <input
             type="search"
             className={`form-control form-control-sm ${styles.searchInput}`}
             placeholder="Search items..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleSearch}
           />
         </form>
       )}
 
-      {/* RIGHT ICONS */}
       {!searchMode && (
         <div className={styles.rightIcons}>
-          {/* MOBILE SEARCH ICON */}
           <button
             className="btn btn-outline-dark d-lg-none"
             onClick={() => setSearchMode(true)}
@@ -159,6 +148,7 @@ const Navbar = ({ toggleSidebar }) => {
           )}
         </div>
       )}
+
     </header>
   );
 };

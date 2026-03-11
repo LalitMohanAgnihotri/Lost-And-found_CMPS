@@ -1,0 +1,114 @@
+/* Page background spacing */
+.report-page {
+  padding: 20px;
+}
+
+/* Form container */
+.report-container {
+  max-width: 700px;
+  margin: auto;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* Title */
+.report-title {
+  text-align: center;
+  color: #1aa39c;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+/* Form layout */
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Inputs */
+.report-form input,
+.report-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+/* Focus effect */
+.report-form input:focus,
+.report-form textarea:focus {
+  outline: none;
+  border-color: #1aa39c;
+  box-shadow: 0 0 0 2px rgba(26,163,156,0.1);
+}
+
+/* textarea */
+.report-form textarea {
+  height: 100px;
+  resize: none;
+}
+
+/* file input */
+.file-input {
+  padding: 8px;
+}
+
+/* button */
+.report-btn {
+  background: linear-gradient(135deg, #1aa39c, #ff7a59);
+  border: none;
+  padding: 12px;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.report-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ---------- Responsive ---------- */
+
+/* Tablet */
+@media (max-width: 768px) {
+
+  .report-container {
+    padding: 25px;
+  }
+
+  .report-title {
+    font-size: 22px;
+  }
+
+  .report-form input,
+  .report-form textarea {
+    font-size: 13px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+
+  .report-container {
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .report-title {
+    font-size: 20px;
+  }
+
+  .report-btn {
+    font-size: 14px;
+    padding: 11px;
+  }
+}

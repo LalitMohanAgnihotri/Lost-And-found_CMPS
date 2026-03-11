@@ -1,6 +1,7 @@
-const ReportFound = () => {
-  return (
-    <h1 className="text-center mt-5">Report Found Items Page - Coming Soon!</h1>
-  )
-};
+import ReportItem from "../components/ReportItem";
+
+function ReportFound() {
+  return <ReportItem type="found" />;
+}
+
 export default ReportFound;

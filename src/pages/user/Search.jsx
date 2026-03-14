@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-import LostCard from "../components/LostCard";
-import FoundCard from "../components/FoundCard";
+import LostCard from "../../components/LostCard";
+import FoundCard from "../../components/FoundCard";
 
-import "../styles/Lost.css";
+import "../../styles/Lost.css";
 
 const Search = () => {
-
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const query = params.get("q");
@@ -17,7 +16,6 @@ const Search = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-
     if (!query || query.trim() === "") {
       setLostItems([]);
       setFoundItems([]);
@@ -25,17 +23,15 @@ const Search = () => {
     }
 
     const fetchData = async () => {
-
       setLoading(true);
 
       try {
-
         const lostRes = await fetch(
-          `http://localhost:3000/api/lost?search=${query}`
+          `http://localhost:3000/api/lost?search=${query}`,
         );
 
         const foundRes = await fetch(
-          `http://localhost:3000/api/found?search=${query}`
+          `http://localhost:3000/api/found?search=${query}`,
         );
 
         const lostData = await lostRes.json();
@@ -43,7 +39,6 @@ const Search = () => {
 
         setLostItems(lostData);
         setFoundItems(foundData);
-
       } catch (err) {
         console.error(err);
       }
@@ -52,7 +47,6 @@ const Search = () => {
     };
 
     fetchData();
-
   }, [query]);
 
   if (!query) {
@@ -68,10 +62,7 @@ const Search = () => {
 
   return (
     <div className="lost-container">
-
-      <h2 className="page-title">
-        Search Results for "{query}"
-      </h2>
+      <h2 className="page-title">Search Results for "{query}"</h2>
 
       {lostItems.length === 0 && foundItems.length === 0 && (
         <p className="text-center">No items found</p>
@@ -100,7 +91,6 @@ const Search = () => {
           </div>
         </>
       )}
-
     </div>
   );
 };

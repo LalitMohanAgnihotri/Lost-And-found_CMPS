@@ -10,6 +10,7 @@ import "./models/Found.js";
 import authRoutes from "./routes/auth.routes.js";
 import lostRoutes from "./routes/lost.routes.js";
 import foundRoutes from "./routes/found.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 const app = express(); // ✅ app FIRST
 
@@ -21,5 +22,6 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/lost", lostRoutes);
 app.use("/api/found", foundRoutes);
+app.use("/api/admin", adminRoutes);
 
 export default app;

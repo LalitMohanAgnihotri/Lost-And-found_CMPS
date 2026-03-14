@@ -1,6 +1,8 @@
-import { logout } from "../utils/auth";
+import { useAuth } from "../../context/AuthContext";
 
 const Profile = () => {
+  const { logout } = useAuth();
+
   return (
     <div className="dropdown">
       <a

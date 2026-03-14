@@ -1,48 +1,47 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { useState } from "react";
+
 import { Routes, Route } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import Footer from "./components/Footer";
+import UserLayout from "./layouts/UserLayout";
+import AdminLayout from "./layouts/AdminLayout";
+
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 
-import Home from "./pages/Home";
-import Lost from "./pages/Lost";
-import Found from "./pages/Found";
-import ReportLost from "./pages/ReportLost";
-import ReportFound from "./pages/ReprotFound";
-import Search from "./pages/Search";
-import Claim from "./pages/Claim";
+import Home from "./pages/user/Home";
+import Lost from "./pages/user/Lost";
+import Found from "./pages/user/Found";
+import ReportLost from "./pages/user/ReportLost";
+import ReportFound from "./pages/user/ReprotFound";
+import Search from "./pages/user/Search";
+import Claim from "./pages/user/Claim";
 
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 import "./App.css";
 
 const App = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
-
   return (
-    <>
-      <Navbar toggleSidebar={toggleSidebar} />
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+    <Routes>
 
-      <Routes>
-        {/* 🔓 PUBLIC ROUTES */}
+      {/* AUTH ROUTES */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+
+      {/* USER APP */}
+      <Route element={<UserLayout />}>
+
+        {/* PUBLIC */}
         <Route path="/" element={<Home />} />
         <Route path="/lost-items" element={<Lost />} />
         <Route path="/found-items" element={<Found />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
         <Route path="/search" element={<Search />} />
 
-        {/* 🔒 PROTECTED ROUTES */}
+        {/* USER PROTECTED */}
         <Route
           path="/report-lost"
           element={
@@ -60,22 +59,32 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route
-        path="/claim/:type/:id"
-        element={
-          <ProtectedRoute>
-            <Claim />
-          </ProtectedRoute>
-        }
-      />
-      </Routes>
-      
 
-      <Footer />
-    </>
+        <Route
+          path="/claim/:type/:id"
+          element={
+            <ProtectedRoute>
+              <Claim />
+            </ProtectedRoute>
+          }
+        />
+
+      </Route>
+
+      {/* ADMIN APP */}
+      <Route
+        path="/admin"
+        element={
+          <AdminRoute>
+            <AdminLayout />
+          </AdminRoute>
+        }
+      >
+        <Route path="dashboard" element={<AdminDashboard />} />
+      </Route>
+
+    </Routes>
   );
 };
 
 export default App;
-
-// mongod --dbpath D:\mongodb\data                   

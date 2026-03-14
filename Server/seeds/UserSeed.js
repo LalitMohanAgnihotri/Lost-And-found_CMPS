@@ -1,28 +1,40 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import bcrypt from "bcryptjs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-import User from "../models/User.js";
+import User from "../models/Users.js";
 import users from "./user.seed.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config({
-  path: path.resolve(__dirname, "../../.env"),
+  path: path.resolve(__dirname, "../.env"),
 });
-
-
-console.log("MONGO_URI =", process.env.MONGO_URI);
 
 mongoose.connect(process.env.MONGO_URI);
 
 const seedUsers = async () => {
-  await User.deleteMany();
-  const created = await User.insertMany(users);
-  console.log("USER ID:", created[0]._id.toString());
-  mongoose.connection.close();
+  try {
+    await User.deleteMany();
+
+    const hashedUsers = await Promise.all(
+      users.map(async (user) => ({
+        ...user,
+        password: await bcrypt.hash(user.password, 10),
+      }))
+    );
+
+    await User.insertMany(hashedUsers);
+
+    console.log("Users seeded successfully");
+
+    mongoose.connection.close();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 seedUsers();

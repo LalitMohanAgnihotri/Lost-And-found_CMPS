@@ -48,7 +48,7 @@ export const reportLost = async (req, res) => {
       description: req.body.description,
       location: req.body.location,
       contactEmail: req.body.contactEmail,
-      reportedBy: req.user._id,
+      reportedBy: req.user.id,
       image: req.file ? req.file.path : ""
     });
 

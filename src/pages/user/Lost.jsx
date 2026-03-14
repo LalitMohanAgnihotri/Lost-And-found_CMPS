@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetchLostItems } from "../api/lost.api.js";
-import LostCard from "../components/LostCard";
-import "../styles/Lost.css";
+import { fetchLostItems } from "../../api/lost.api.js";
+import LostCard from "../../components/LostCard.jsx";
+import "../../styles/Lost.css";
 
 const Lost = () => {
   const [lostItems, setLostItems] = useState([]);

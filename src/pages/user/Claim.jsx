@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import api from "../api/axios";
-import "../styles/claim.css";
+import api from "../../api/axios";
+import "../../styles/claim.css";
 
 const Claim = () => {
   const { type, id } = useParams(); // lost | found
@@ -26,7 +26,7 @@ const Claim = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        }
+        },
       );
 
       alert("Claim submitted successfully ✅");

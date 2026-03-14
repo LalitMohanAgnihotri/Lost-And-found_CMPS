@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetchFoundItems } from "../api/found.js";
-import FoundCard from "../components/FoundCard";
-import "../styles/Lost.css";
+import { fetchFoundItems } from "../../api/found.js";
+import FoundCard from "../../components/FoundCard.jsx";
+import "../../styles/Lost.css";
 
 const Found = () => {
   const [foundItems, setFoundItems] = useState([]);

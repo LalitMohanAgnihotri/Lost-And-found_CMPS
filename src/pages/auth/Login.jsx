@@ -1,52 +1,54 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import api from "../api/axios";
-import "../styles/auth.css";
+import { useAuth } from "../../context/AuthContext";
+import "../../styles/Auth.css";
 
-const Signup = () => {
-  const location = useLocation();
+const Login = () => {
+  const { login } = useAuth();
+
   const navigate = useNavigate();
+  const location = useLocation();
 
   const from = location.state?.from || "/";
 
   const [form, setForm] = useState({
-    name: "",
     email: "",
     password: "",
   });
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await api.post("/auth/signup", form);
-      localStorage.setItem("token", res.data.token);
 
-      navigate(from, { replace: true });
+    try {
+      const user = await login(form.email, form.password);
+
+      // Redirect based on role
+      if (user.role === "ADMIN") {
+        navigate("/admin/dashboard", { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
+
     } catch (err) {
-      alert(err.response?.data?.message || "Signup failed");
+      console.error(err);
+      alert(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
     <div className="auth-container">
       <div className="auth-box">
-        <h2>Create Account</h2>
+        <h2>Login</h2>
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            onChange={handleChange}
-            required
-          />
-
           <input
             type="email"
             name="email"
@@ -63,15 +65,15 @@ const Signup = () => {
             required
           />
 
-          <button type="submit">Sign Up</button>
+          <button type="submit">Login</button>
         </form>
 
         <div className="auth-footer">
-          Already have an account? <Link to="/login">Login</Link>
+          Don’t have an account? <Link to="/signup">Sign up</Link>
         </div>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default Login;

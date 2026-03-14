@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { isLoggedIn } from "../utils/auth";
+import { useAuth } from "../../context/AuthContext";
 
 import Profile from "./Profile";
 import styles from "./Navbar.module.css";
@@ -10,7 +10,9 @@ const Navbar = ({ toggleSidebar }) => {
   const [search, setSearch] = useState("");
 
   const navigate = useNavigate();
-  const loggedIn = isLoggedIn();
+
+  const { user } = useAuth();   // ✅ get auth state from context
+  const loggedIn = !!user;
 
   const handleSearch = (e) => {
     if (e.key === "Enter") {
@@ -25,7 +27,6 @@ const Navbar = ({ toggleSidebar }) => {
 
   return (
     <header className={`navbar ${styles.navbar}`}>
-
       {!searchMode && (
         <div className={styles.brand}>
           <button
@@ -55,41 +56,57 @@ const Navbar = ({ toggleSidebar }) => {
       {!searchMode && (
         <ul className={`d-none d-lg-flex ${styles.navLinks}`}>
           <li>
-            <NavLink to="/" end className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }>
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+              }
+            >
               Home
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/lost-items" className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }>
+            <NavLink
+              to="/lost-items"
+              className={({ isActive }) =>
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+              }
+            >
               Lost Items
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/found-items" className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }>
+            <NavLink
+              to="/found-items"
+              className={({ isActive }) =>
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+              }
+            >
               Found Items
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/report-lost" className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }>
+            <NavLink
+              to="/report-lost"
+              className={({ isActive }) =>
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+              }
+            >
               Report Lost
             </NavLink>
           </li>
 
           <li>
-            <NavLink to="/report-found" className={({ isActive }) =>
-              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
-            }>
+            <NavLink
+              to="/report-found"
+              className={({ isActive }) =>
+                isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+              }
+            >
               Report Found
             </NavLink>
           </li>
@@ -148,7 +165,6 @@ const Navbar = ({ toggleSidebar }) => {
           )}
         </div>
       )}
-
     </header>
   );
 };

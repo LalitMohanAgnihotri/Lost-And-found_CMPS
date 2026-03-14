@@ -47,7 +47,7 @@ export const reportFound = async (req, res) => {
       item: req.body.item,
       description: req.body.description,
       location: req.body.location,
-      foundBy: req.user._id,
+      foundBy: req.user.id,
       image: req.file ? req.file.path : ""
     });
 

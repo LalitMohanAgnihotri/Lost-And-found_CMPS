@@ -19,7 +19,7 @@ const Found = () => {
     <div className="lost-container">
       <h2 className="page-title">Found Items</h2>
 
-      <div className="lost-grid">
+      <div className="card-grid">
         {foundItems.map((item) => (
           <FoundCard key={item._id} item={item} />
         ))}

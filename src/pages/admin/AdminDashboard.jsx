@@ -1,3 +1,4 @@
+import "../../styles/admindashboard.css";
 const AdminDashboard = () => {
   return (
     <div className="container mt-4">

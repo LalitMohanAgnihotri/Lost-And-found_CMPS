@@ -21,6 +21,7 @@ import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import Claims from "./pages/admin/Claims";
 
 import "./App.css";
 
@@ -81,6 +82,7 @@ const App = () => {
         }
       >
         <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="claims" element={<Claims />} />
       </Route>
 
     </Routes>

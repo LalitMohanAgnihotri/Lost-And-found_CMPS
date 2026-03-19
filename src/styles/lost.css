@@ -22,22 +22,25 @@ body {
   font-weight: 700;
 }
 
-/* ================= GRID ================= */
+/* ================= UNIVERSAL GRID ================= */
 
-.lost-grid {
+.card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: 20px;
+  margin-top: 20px;
 }
 
-@media (max-width: 992px) {
-  .lost-grid {
+/* Tablet */
+@media (max-width: 1024px) {
+  .card-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 576px) {
-  .lost-grid {
+/* Mobile */
+@media (max-width: 600px) {
+  .card-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -63,7 +66,7 @@ body {
 
 .lost-image {
   width: 100%;
-  height: 200px;
+  height: 200px; /* SAME everywhere */
   object-fit: cover;
   transition: transform 0.6s ease, filter 0.6s ease;
 }
@@ -107,7 +110,6 @@ body {
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.2px;
 }
 
 .status.resolved {
@@ -124,7 +126,7 @@ body {
 
 .claim-btn {
   display: inline-block;
-  margin-top: 1.2rem;     /* 👈 top spacing */
+  margin-top: 1.2rem;
 
   padding: 0.45rem 1.2rem;
   font-size: 0.85rem;
@@ -141,14 +143,11 @@ body {
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-/* Hover */
 .claim-btn:hover {
   background-color: #36b1a7;
   transform: translateY(-2px);
 }
 
-/* Click */
 .claim-btn:active {
   transform: translateY(0);
 }
-

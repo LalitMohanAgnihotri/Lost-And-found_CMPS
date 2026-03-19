@@ -1,0 +1,48 @@
+.admin-sidebar {
+  width: 240px;
+
+  background: #ffffff;
+  border-right: 1px solid #eee;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  overflow-y: auto;
+}
+@media (min-width: 1024px) {
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+  }
+}
+/* Section titles */
+.section-title {
+  font-size: 11px;
+  color: #888;
+  margin: 15px 0 5px;
+}
+
+/* Links */
+.link {
+  display: block;
+  padding: 10px 12px;
+  margin: 4px 0;
+  border-radius: 6px;
+  color: #222;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.link:hover {
+  background: #f0fdfa;
+  color: #58B6AE;
+}
+
+.link.active {
+  background: #58B6AE;
+  color: white;
+}

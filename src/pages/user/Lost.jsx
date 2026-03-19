@@ -19,7 +19,7 @@ const Lost = () => {
     <div className="lost-container">
       <h2 className="page-title">Lost Items</h2>
 
-      <div className="lost-grid">
+      <div className="card-grid">
         {lostItems.map((item) => (
           <LostCard key={item._id} item={item} />
         ))}

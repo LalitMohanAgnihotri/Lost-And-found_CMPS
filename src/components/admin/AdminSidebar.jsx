@@ -1,63 +1,37 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { NavLink } from "react-router-dom";
+import "../../styles/adminSidebar.css";
 
-const AdminSidebar = () => {
-  const { logout } = useAuth();
-  const navigate = useNavigate();
+const AdminSidebar = ({ closeSidebar }) => {
 
-  const handleLogout = () => {
-    logout();
-    navigate("/"); // go to public home after logout
+  const getLinkClass = ({ isActive }) =>
+    isActive ? "link active" : "link";
+
+  const handleClick = () => {
+    // close sidebar on mobile when clicking link
+    closeSidebar && closeSidebar();
   };
 
   return (
-    <div
-      style={{
-        width: "220px",
-        background: "#1f2937",
-        color: "white",
-        minHeight: "100vh",
-        padding: "20px"
-      }}
-    >
-      <h4>Admin Panel</h4>
+    <div className="admin-sidebar">
+      <nav>
+        <p className="section-title">MAIN</p>
+        <NavLink to="/admin/dashboard" className={getLinkClass} onClick={handleClick}>
+          🏠 Dashboard
+        </NavLink>
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        <li>
-          <NavLink to="/admin/dashboard">Dashboard</NavLink>
-        </li>
+        <p className="section-title">MANAGEMENT</p>
+        <NavLink to="/admin/users" className={getLinkClass} onClick={handleClick}>
+          👤 Users
+        </NavLink>
 
-        <li>
-          <NavLink to="/admin/users">Users</NavLink>
-        </li>
+        <NavLink to="/admin/items" className={getLinkClass} onClick={handleClick}>
+          📦 Items
+        </NavLink>
 
-        <li>
-          <NavLink to="/admin/lost">Lost Reports</NavLink>
-        </li>
-
-        <li>
-          <NavLink to="/admin/found">Found Reports</NavLink>
-        </li>
-
-        <hr style={{ borderColor: "#444" }} />
-
-        <li>
-          <button
-            onClick={handleLogout}
-            style={{
-              background: "#ef4444",
-              border: "none",
-              color: "white",
-              padding: "8px 12px",
-              width: "100%",
-              cursor: "pointer",
-              borderRadius: "4px"
-            }}
-          >
-            Logout
-          </button>
-        </li>
-      </ul>
+        <NavLink to="/admin/claims" className={getLinkClass} onClick={handleClick}>
+          📩 Claim Requests
+        </NavLink>
+      </nav>
     </div>
   );
 };

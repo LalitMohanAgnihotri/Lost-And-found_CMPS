@@ -37,24 +37,21 @@ const Home = () => {
           </p>
         </div>
       </section>
+      <h5 className="mt-5">Recent Lost Items</h5>
+      <div className="card-grid">
+        {lost.map((item) => (
+          <LostCard key={item._id} item={item} />
+        ))}
+      </div>
 
-      {/* CARDS AREA */}
-      <div className="home-cards">
-        <h5 className="mt-4">Recent Lost Items</h5>
-        <div className="lost-grid">
-          {lost.map((item) => (
-            <LostCard key={item._id} item={item} />
-          ))}
-        </div>
+      <h5 className="mt-5">Recent Found Items</h5>
 
-        <h5 className="mt-5">Recent Found Items</h5>
-        <div className="lost-grid">
-          {found.length > 0 ? (
-            found.map((item) => <FoundCard key={item._id} item={item} />)
-          ) : (
-            <p className="text-muted">No unresolved found items yet.</p>
-          )}
-        </div>
+      <div className="card-grid">
+        {found.length > 0 ? (
+          found.map((item) => <FoundCard key={item._id} item={item} />)
+        ) : (
+          <p className="text-muted">No unresolved found items yet.</p>
+        )}
       </div>
     </>
   );

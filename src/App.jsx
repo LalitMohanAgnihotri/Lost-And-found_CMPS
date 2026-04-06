@@ -16,13 +16,16 @@ import ReportLost from "./pages/user/ReportLost";
 import ReportFound from "./pages/user/ReprotFound";
 import Search from "./pages/user/Search";
 import Claim from "./pages/user/Claim";
-import ProfilePage from "../src/components/user/Profile";
+import ProfilePage from "../src/pages/user/Profile";
 
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Claims from "./pages/admin/Claims";
+import Users from "./pages/admin/Users";
+import UserProfile from "./pages/admin/UserProfile";
+import Item from "./pages/admin/Items";
 
 import "./App.css";
 
@@ -88,6 +91,9 @@ const App = () => {
         }
       >
         <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="users" element={<Users />} />
+        <Route path="users/:id" element={<UserProfile />} />
+        <Route path="items" element={<Item />} />
         <Route path="claims" element={<Claims />} />
       </Route>
     </Routes>

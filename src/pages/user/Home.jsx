@@ -33,7 +33,10 @@ const Home = () => {
             It is a small but mighty office, a temporary sanctuary for misplaced
             belongings, from misplaced keys and forgotten umbrellas to lost
             wallets and cherished toys. This is where a shared sense of honesty
-            and community shines.
+            and community shines, as strangers turn in what they've found,
+            hoping to bring a small sense of relief to someone who's lost
+            something dear. It's a place of quiet reunion and simple, everyday
+            miracles.
           </p>
         </div>
       </section>

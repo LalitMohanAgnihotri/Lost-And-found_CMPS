@@ -5,15 +5,16 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // 🔥 NEW
 
-  // restore session after refresh
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+    const storedUser = localStorage.getItem("user");
 
-    if (token && role) {
-      setUser({ role });
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
+
+    setLoading(false); // 🔥 IMPORTANT
   }, []);
 
   const login = async (email, password) => {
@@ -22,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     const { token, user } = res.data;
 
     localStorage.setItem("token", token);
-    localStorage.setItem("role", user.role);
+    localStorage.setItem("user", JSON.stringify(user));
 
     setUser(user);
 
@@ -31,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    localStorage.removeItem("user");
 
     setUser(null);
 
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

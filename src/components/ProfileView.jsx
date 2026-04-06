@@ -1,31 +1,8 @@
-import { useEffect, useState } from "react";
-import api from "../../api/axios";
-import LostCard from "../../components/LostCard";
-import FoundCard from "../../components/FoundCard";
-import "../../styles/profile.css";
+import LostCard from "./LostCard";
+import FoundCard from "./FoundCard";
+import "../styles/profile.css";
 
-const Profile = () => {
-  const [data, setData] = useState({
-    user: {},
-    lost: [],
-    found: [],
-    claims: [],
-  });
-
-  const [activeTab, setActiveTab] = useState("lost");
-
-  useEffect(() => {
-    fetchProfile();
-  }, []);
-
-  const fetchProfile = async () => {
-    try {
-      const res = await api.get("/user/profile");
-      setData(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+const ProfileView = ({ data, activeTab, setActiveTab, isAdmin = false }) => {
 
   const getStatusColor = (status) => {
     if (status === "approved") return "bg-success";
@@ -33,7 +10,6 @@ const Profile = () => {
     return "bg-warning text-dark";
   };
   
-
   return (
     <div className="container mt-4">
 
@@ -60,23 +36,29 @@ const Profile = () => {
       </div>
 
       {/* TABS */}
-      <div className="mb-4 d-flex gap-3">
+      <div className="mb-4 d-flex gap-3 flex-wrap">
         <button
-          className={`btn ${activeTab === "lost" ? "btn-dark" : "btn-outline-dark"}`}
+          className={`btn ${
+            activeTab === "lost" ? "btn-dark" : "btn-outline-dark"
+          }`}
           onClick={() => setActiveTab("lost")}
         >
           Lost Items
         </button>
 
         <button
-          className={`btn ${activeTab === "found" ? "btn-dark" : "btn-outline-dark"}`}
+          className={`btn ${
+            activeTab === "found" ? "btn-dark" : "btn-outline-dark"
+          }`}
           onClick={() => setActiveTab("found")}
         >
           Found Items
         </button>
 
         <button
-          className={`btn ${activeTab === "claims" ? "btn-dark" : "btn-outline-dark"}`}
+          className={`btn ${
+            activeTab === "claims" ? "btn-dark" : "btn-outline-dark"
+          }`}
           onClick={() => setActiveTab("claims")}
         >
           Claims
@@ -103,7 +85,10 @@ const Profile = () => {
           (data.found.length > 0 ? (
             data.found.map(item => (
               <div key={item._id} className="col-md-4">
-                <FoundCard item={{ ...item, title: item.item }} />
+                <FoundCard
+                  item={{ ...item, title: item.item }}
+                  showClaimButton={!isAdmin}
+                />
               </div>
             ))
           ) : (
@@ -118,10 +103,17 @@ const Profile = () => {
 
                 {claim.item && (
                   <FoundCard
-              item={{ ...claim.item, title: claim.item.item }}
-              showClaimButton={false} // ✅ remove button
-            />
+                    item={{ ...claim.item, title: claim.item.item }}
+                    showClaimButton={false}
+                  />
                 )}
+
+                {/* STATUS */}
+                <div className="text-center mt-2">
+                  <span className={`badge ${getStatusColor(claim.status)} px-3 py-2`}>
+                    {claim.status}
+                  </span>
+                </div>
 
               </div>
             ))
@@ -134,4 +126,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileView;

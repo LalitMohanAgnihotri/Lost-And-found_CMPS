@@ -2,19 +2,31 @@ import express from "express";
 import authMiddleware from "../middlewares/auth.middleware.js";
 import isAdmin from "../middlewares/role.middleware.js";
 
+import {
+  getStats,
+  getUsers,
+  getUserProfileAdmin,
+  getLostItems,
+  getFoundItems,
+  deleteLost,
+  deleteFound
+} from "../controllers/admin.controller.js";
+
 const router = express.Router();
 
-// Admin dashboard
-router.get("/dashboard", authMiddleware, isAdmin, (req, res) => {
-  res.json({
-    message: "Welcome Admin",
-  });
-});
-router.get("/dashboard", authMiddleware, isAdmin, (req, res) => {
-  console.log("User:", req.user);
+// DASHBOARD
+router.get("/stats", authMiddleware, isAdmin, getStats);
 
-  res.json({
-    message: "Welcome Admin",
-  });
-});
+// USERS
+router.get("/users", authMiddleware, isAdmin, getUsers);
+router.get("/users/:id", authMiddleware, isAdmin, getUserProfileAdmin);
+
+// ITEMS
+router.get("/lost", authMiddleware, isAdmin, getLostItems);
+router.get("/found", authMiddleware, isAdmin, getFoundItems);
+
+// DELETE
+router.delete("/lost/:id", authMiddleware, isAdmin, deleteLost);
+router.delete("/found/:id", authMiddleware, isAdmin, deleteFound);
+
 export default router;

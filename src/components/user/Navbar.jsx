@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
-import Profile from "./Profile";
+import Profile from "./ProfileDropdown.";
 import styles from "./Navbar.module.css";
 
 const Navbar = ({ toggleSidebar }) => {
@@ -11,7 +11,7 @@ const Navbar = ({ toggleSidebar }) => {
 
   const navigate = useNavigate();
 
-  const { user } = useAuth();   // ✅ get auth state from context
+  const { user } = useAuth(); // ✅ get auth state from context
   const loggedIn = !!user;
 
   const handleSearch = (e) => {

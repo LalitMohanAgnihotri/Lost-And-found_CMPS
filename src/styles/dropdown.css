@@ -1,0 +1,19 @@
+.navbar-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4aa7a3, #2f8f8b); /* ✅ match hero color */
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(74, 167, 163, 0.25);
+  cursor: pointer;
+}
+
+.navbar-avatar:hover {
+  transform: scale(1.08);
+}

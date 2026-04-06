@@ -16,6 +16,7 @@ import ReportLost from "./pages/user/ReportLost";
 import ReportFound from "./pages/user/ReprotFound";
 import Search from "./pages/user/Search";
 import Claim from "./pages/user/Claim";
+import ProfilePage from "../src/components/user/Profile";
 
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
@@ -28,14 +29,12 @@ import "./App.css";
 const App = () => {
   return (
     <Routes>
-
       {/* AUTH ROUTES */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
 
       {/* USER APP */}
       <Route element={<UserLayout />}>
-
         {/* PUBLIC */}
         <Route path="/" element={<Home />} />
         <Route path="/lost-items" element={<Lost />} />
@@ -69,7 +68,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       {/* ADMIN APP */}
@@ -84,7 +90,6 @@ const App = () => {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="claims" element={<Claims />} />
       </Route>
-
     </Routes>
   );
 };

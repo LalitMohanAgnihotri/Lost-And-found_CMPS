@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "../styles/lost.css";
 
-const FoundCard = ({ item }) => {
+const FoundCard = ({ item, showClaimButton = true }) => {
   return (
     <div className="lost-card">
       <img src={item.image} alt={item.item} className="lost-image" />
@@ -30,9 +30,10 @@ const FoundCard = ({ item }) => {
           </span>
         </p>
 
-        {!item.isResolved && (
+        {/* 🔥 FIXED */}
+        {!item.isResolved && showClaimButton && (
           <Link
-            to={`/claim/found/${item._id}`}   // ✅ FIXED
+            to={`/claim/found/${item._id}`}
             className="btn btn-primary mt-2 claim-btn"
           >
             Claim Item

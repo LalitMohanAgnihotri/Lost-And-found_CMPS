@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import "../styles/AdminLayout.css";
-import Profile from "../components/user/Profile";
+import Profile from "../components/user/ProfileDropdown.";
 import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
@@ -22,7 +22,6 @@ const AdminLayout = () => {
 
   return (
     <div className="admin-layout">
-
       {/* Overlay */}
       {open && isMobile && (
         <div className="overlay" onClick={() => setOpen(false)} />
@@ -36,13 +35,9 @@ const AdminLayout = () => {
       {/* Main */}
       <div className="main-section">
         <div className="topbar">
-
           {/* Show only mobile */}
           {isMobile && (
-            <button
-              className="toggle-btn"
-              onClick={() => setOpen(!open)}
-            >
+            <button className="toggle-btn" onClick={() => setOpen(!open)}>
               ☰
             </button>
           )}

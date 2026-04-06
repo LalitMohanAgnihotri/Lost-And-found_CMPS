@@ -14,6 +14,9 @@ import lostRoutes from "./routes/lost.routes.js";
 import foundRoutes from "./routes/found.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import claimRoutes from "./routes/claim.routes.js";
+import userRoutes from "./routes/user.routes.js";
+
+
 
 const app = express(); // ✅ app FIRST
 
@@ -26,5 +29,7 @@ app.use("/api/lost", lostRoutes);
 app.use("/api/found", foundRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/claim", claimRoutes);
+app.use("/api/user", userRoutes);
+
 
 export default app;

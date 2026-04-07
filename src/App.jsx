@@ -25,7 +25,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Claims from "./pages/admin/Claims";
 import Users from "./pages/admin/Users";
 import UserProfile from "./pages/admin/UserProfile";
-import Item from "./pages/admin/Items";
+import Items from "./pages/admin/Items";
 
 import "./App.css";
 
@@ -93,7 +93,7 @@ const App = () => {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<Users />} />
         <Route path="users/:id" element={<UserProfile />} />
-        <Route path="items" element={<Item />} />
+        <Route path="items" element={<Items />} />
         <Route path="claims" element={<Claims />} />
       </Route>
     </Routes>

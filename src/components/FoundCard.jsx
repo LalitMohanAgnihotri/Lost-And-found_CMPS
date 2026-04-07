@@ -30,7 +30,16 @@ const FoundCard = ({ item, showClaimButton = true }) => {
           </span>
         </p>
 
-        {/* 🔥 FIXED */}
+        {/* ✅ CLAIM BADGE */}
+        {item.claimedBy && (
+          <div className="text-center mt-2">
+            <span className="badge bg-primary px-3 py-2">
+              👤 {item.claimedBy}
+            </span>
+          </div>
+        )}
+
+        {/* CLAIM BUTTON */}
         {!item.isResolved && showClaimButton && (
           <Link
             to={`/claim/found/${item._id}`}

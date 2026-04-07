@@ -109,11 +109,11 @@ const ProfileView = ({ data, activeTab, setActiveTab, isAdmin = false }) => {
                 )}
 
                 {/* STATUS */}
-                <div className="text-center mt-2">
+                {/* <div className="text-center mt-2">
                   <span className={`badge ${getStatusColor(claim.status)} px-3 py-2`}>
                     {claim.status}
                   </span>
-                </div>
+                </div> */}
 
               </div>
             ))

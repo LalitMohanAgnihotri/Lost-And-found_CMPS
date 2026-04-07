@@ -21,34 +21,13 @@ const Items = () => {
 
   const fetchItems = async () => {
     try {
-      const [lostRes, foundRes, claimRes] = await Promise.all([
+      const [lostRes, foundRes] = await Promise.all([
         api.get("/admin/lost"),
         api.get("/admin/found"),
-        api.get("/claim"),
       ]);
 
-      // 🔥 MAP CLAIMS
-      const claimsMap = {};
-
-      claimRes.data.forEach((claim) => {
-        if (claim.itemId) {
-          claimsMap[claim.itemId] = claim.user?.name;
-        }
-      });
-
-      // 🔥 ATTACH CLAIM INFO
-      const updatedLost = lostRes.data.map((item) => ({
-        ...item,
-        claimedBy: claimsMap[item._id] || null,
-      }));
-
-      const updatedFound = foundRes.data.map((item) => ({
-        ...item,
-        claimedBy: claimsMap[item._id] || null,
-      }));
-
-      setLost(updatedLost);
-      setFound(updatedFound);
+      setLost(lostRes.data);
+      setFound(foundRes.data);
 
     } catch (err) {
       console.log(err);
@@ -90,13 +69,10 @@ const Items = () => {
   return (
     <div className="container mt-4">
 
-      {/* HEADER */}
       <div className="mb-4">
         <h3 className="fw-bold">Manage Items</h3>
-        <p className="text-muted">Advanced search & filter items</p>
       </div>
 
-      {/* FILTER BAR */}
       <div className="row g-2 mb-4">
 
         <div className="col-md-3">
@@ -146,7 +122,6 @@ const Items = () => {
 
       </div>
 
-      {/* TABS */}
       <div className="mb-4 d-flex gap-3">
         <button
           className={`btn ${
@@ -167,7 +142,6 @@ const Items = () => {
         </button>
       </div>
 
-      {/* CONTENT */}
       <div className="row g-3">
 
         {activeTab === "lost" &&

@@ -1,14 +1,13 @@
 import Claim from "../models/Claim.js";
 import Found from "../models/Found.js";
 
-// 🔥 GET ALL CLAIMS WITH ITEM DATA
+// GET ALL CLAIMS WITH ITEM DATA
 export const getAllClaims = async (req, res) => {
   try {
     const claims = await Claim.find()
       .populate("user", "name email")
       .sort({ createdAt: -1 });
 
-    // attach found item data
     const updated = await Promise.all(
       claims.map(async (c) => {
         const item = await Found.findById(c.itemId);
@@ -26,14 +25,16 @@ export const getAllClaims = async (req, res) => {
   }
 };
 
-// 🔥 CREATE CLAIM
+// CREATE CLAIM (FIXED)
 export const createClaim = async (req, res) => {
   try {
     const { itemId, proofMessage } = req.body;
 
+    // allow re-claim if rejected
     const existing = await Claim.findOne({
       user: req.user.id,
       itemId,
+      status: { $in: ["pending", "approved"] },
     });
 
     if (existing) {
@@ -60,7 +61,7 @@ export const createClaim = async (req, res) => {
   }
 };
 
-// 🔥 APPROVE
+// APPROVE
 export const approveClaim = async (req, res) => {
   const claim = await Claim.findById(req.params.id);
 
@@ -69,7 +70,7 @@ export const approveClaim = async (req, res) => {
   claim.status = "approved";
   await claim.save();
 
-  // mark item resolved
+  // ✅ ONLY APPROVED → resolved
   await Found.findByIdAndUpdate(claim.itemId, {
     isResolved: true,
   });
@@ -77,11 +78,16 @@ export const approveClaim = async (req, res) => {
   res.json({ message: "Approved" });
 };
 
-// 🔥 REJECT
+// REJECT (FIXED)
 export const rejectClaim = async (req, res) => {
-  await Claim.findByIdAndUpdate(req.params.id, {
-    status: "rejected",
-  });
+  const claim = await Claim.findById(req.params.id);
+
+  if (!claim) return res.status(404).json({ message: "Not found" });
+
+  claim.status = "rejected";
+  await claim.save();
+
+  //  DO NOT mark resolved
 
   res.json({ message: "Rejected" });
 };

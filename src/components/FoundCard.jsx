@@ -1,7 +1,21 @@
 import { Link } from "react-router-dom";
 import "../styles/lost.css";
 
-const FoundCard = ({ item, showClaimButton = true }) => {
+const FoundCard = ({ item, showClaimButton = true, claimStatus }) => {
+  // 🔥 decide what to show
+  const getStatus = () => {
+    if (claimStatus) return claimStatus; // from profile claims
+    return item.isResolved ? "resolved" : "unresolved";
+  };
+
+  const status = getStatus();
+
+  const getClass = () => {
+    if (status === "approved" || status === "resolved") return "status resolved";
+    if (status === "rejected") return "status rejected";
+    return "status unresolved";
+  };
+
   return (
     <div className="lost-card">
       <img src={item.image} alt={item.item} className="lost-image" />
@@ -21,26 +35,13 @@ const FoundCard = ({ item, showClaimButton = true }) => {
 
         <p>
           <strong>Status:</strong>{" "}
-          <span
-            className={
-              item.isResolved ? "status resolved" : "status unresolved"
-            }
-          >
-            {item.isResolved ? "Resolved" : "Unresolved"}
+          <span className={getClass()}>
+            {status}
           </span>
         </p>
 
-        {/* ✅ CLAIM BADGE */}
-        {item.claimedBy && (
-          <div className="text-center mt-2">
-            <span className="badge bg-primary px-3 py-2">
-              👤 {item.claimedBy}
-            </span>
-          </div>
-        )}
-
         {/* CLAIM BUTTON */}
-        {!item.isResolved && showClaimButton && (
+        {showClaimButton && !item.isResolved && (
           <Link
             to={`/claim/found/${item._id}`}
             className="btn btn-primary mt-2 claim-btn"

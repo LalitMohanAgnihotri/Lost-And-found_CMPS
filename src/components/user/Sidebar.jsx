@@ -1,59 +1,47 @@
 import { NavLink } from "react-router-dom";
-import "../../styles/sidebar.css";
+import "../../styles/adminSidebar.css";
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ closeSidebar }) => {
+  const getLinkClass = ({ isActive }) =>
+    isActive ? "link active" : "link";
+
+  const handleClick = () => {
+    closeSidebar && closeSidebar();
+  };
+
   return (
-    <>
-      {/* Overlay for mobile */}
-      {isOpen && (
-        <div
-          className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-lg-none"
-          onClick={toggleSidebar}
-        />
-      )}
+    <div className="admin-sidebar">
+      <nav>
+        {/* MAIN */}
+        <p className="section-title">MAIN</p>
 
-      <div
-        className="sidebar"
-        style={{
-          transform: isOpen ? "translateX(0)" : "translateX(-100%)",
-        }}
-      >
-        <h4 className="sidebar-title">Dashboard</h4>
-        <hr />
+        <NavLink to="/" className={getLinkClass} onClick={handleClick}>
+          <span>🏠</span> Home
+        </NavLink>
 
-        <ul className="sidebar-nav">
-          <li>
-            <NavLink to="/" onClick={toggleSidebar}>
-              Home
-            </NavLink>
-          </li>
+        {/* ITEMS */}
+        <p className="section-title">ITEMS</p>
 
-          <li>
-            <NavLink to="/lost-items" onClick={toggleSidebar}>
-              Lost Items
-            </NavLink>
-          </li>
+        <NavLink to="/lost-items" className={getLinkClass} onClick={handleClick}>
+          <span>📦</span> Lost Items
+        </NavLink>
 
-          <li>
-            <NavLink to="/found-items" onClick={toggleSidebar}>
-              Found Items
-            </NavLink>
-          </li>
+        <NavLink to="/found-items" className={getLinkClass} onClick={handleClick}>
+          <span>📦</span> Found Items
+        </NavLink>
 
-          <li>
-            <NavLink to="/report-lost" onClick={toggleSidebar}>
-              Report Lost
-            </NavLink>
-          </li>
+        {/* REPORT */}
+        <p className="section-title">REPORT</p>
 
-          <li>
-            <NavLink to="/report-found" onClick={toggleSidebar}>
-              Report Found
-            </NavLink>
-          </li>
-        </ul>
-      </div>
-    </>
+        <NavLink to="/report-lost" className={getLinkClass} onClick={handleClick}>
+          <span>📝</span> Report Lost
+        </NavLink>
+
+        <NavLink to="/report-found" className={getLinkClass} onClick={handleClick}>
+          <span>📝</span> Report Found
+        </NavLink>
+      </nav>
+    </div>
   );
 };
 

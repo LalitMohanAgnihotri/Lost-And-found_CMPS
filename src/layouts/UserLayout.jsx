@@ -1,27 +1,52 @@
+import { useState, useEffect } from "react";
+import Sidebar from "../components/user/Sidebar";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/user/Navbar";
-import Sidebar from "../components/user/Sidebar";
-import Footer from "../components/Footer";
-import { useState } from "react";
+import Footer from "../components/common/Footer";
 
+import "../styles/AdminLayout.css";
 const UserLayout = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+
+      if (!mobile) setOpen(false);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <>
-      <Navbar toggleSidebar={toggleSidebar} />
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+    <div className="admin-layout">
+      {/* Overlay (Mobile only) */}
+      {open && isMobile && (
+        <div className="overlay" onClick={() => setOpen(false)} />
+      )}
 
-      <main className="container mt-3">
-        <Outlet />
-      </main>
+      {/* Sidebar */}
+      <div className={`sidebar-wrapper ${open ? "open" : ""}`}>
+        <Sidebar closeSidebar={() => setOpen(false)} />
+      </div>
 
-      <Footer />
-    </>
+      {/* Main Section */}
+      <div className="main-section">
+        {/* Navbar (handles toggle + profile + search) */}
+        <Navbar toggleSidebar={() => setOpen(!open)} />
+
+        {/* Page Content */}
+        <div className="content">
+          <Outlet />
+        </div>
+
+        {/* Footer */}
+        <Footer />
+      </div>
+    </div>
   );
 };
 

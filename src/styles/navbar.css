@@ -1,0 +1,132 @@
+/* NAVBAR */
+.navbar {
+  height: 90px;
+  width: 100%;
+  background: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 20px;
+  border-bottom: 1px solid #eee;
+}
+
+/* LEFT */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-btn {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* BRAND (UPDATED LIKE ADMIN) */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+/* ICON */
+.brand-icon {
+  width: 36px;
+}
+
+/* TEXT */
+.brand-text {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.5px;
+}
+
+/* COLORS */
+.brand-lost {
+  color: #EC9A7E;
+}
+
+.brand-and {
+  color: #58B6AE;
+}
+
+.brand-found {
+  color: #EC9A7E;
+}
+
+/* SEARCH */
+.nav-search {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-search input {
+  width: 60%;
+  max-width: 400px;
+
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+
+  outline: none;
+}
+
+.nav-search input:focus {
+  border-color: #58b6ae;
+}
+
+/* RIGHT */
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.login-btn {
+  padding: 6px 12px;
+  border: 1px solid #222;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #222;
+}
+
+.login-btn:hover {
+  background: #58b6ae;
+  color: white;
+  border-color: #58b6ae;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-search input {
+    width: 100%;
+  }
+
+  .brand-text {
+    font-size: 18px;
+  }
+
+  .brand-icon {
+    width: 30px;
+  }
+}
+/* ICON BUTTON (notifications etc.) */
+.icon-btn {
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.icon-btn:hover {
+  color: #58b6ae;
+}

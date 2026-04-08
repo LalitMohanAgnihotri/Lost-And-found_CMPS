@@ -1,94 +1,60 @@
-/* ===== SIDEBAR WRAPPER ===== */
+/* LAYOUT */
+.admin-layout {
+  display: flex;
+}
 
+/* SIDEBAR WRAPPER (controls everything) */
 .sidebar-wrapper {
-  width: 240px;
-}
-
-/* ===== DESKTOP ===== */
-
-@media (min-width: 1024px) {
-  .sidebar-wrapper {
-    position: relative;
-  }
-  .main-section {
-    margin-left: 240px;   /* 🔥 push content */
-  }
-}
-
-/* ===== MOBILE / TABLET ===== */
-
-@media (max-width: 1023px) {
-  .sidebar-wrapper {
-    position: fixed;
-    top: 0;
-    left: -240px;
-    width: 240px;
-    height: 100vh;
-    background: white;
-    transition: 0.3s ease;
-    z-index: 1002;
-  }
-
-  .sidebar-wrapper.open {
-    left: 0;
-  }
-}
-
-/* ===== MAIN ===== */
-
-.main-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #f9fafb;
-  min-height: 100vh;
-}
-
-/* ===== TOPBAR ===== */
-
-.topbar {
-  height: 60px;
-  background: white;
-  border-bottom: 1px solid #eee;
-  padding: 0 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* ===== TOGGLE ===== */
-
-.toggle-btn {
-  font-size: 22px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-/* hide on desktop */
-@media (min-width: 1024px) {
-  .toggle-btn {
-    display: none;
-  }
-}
-
-/* ===== CONTENT ===== */
-
-.content {
-  padding: 20px;
-  flex: 1;
-  overflow-y: auto;
-}
-
-/* ===== OVERLAY ===== */
-
-.overlay {
   position: fixed;
   top: 0;
   left: 0;
+  height: 100vh;
+  width: 240px;
+
+  background: #fff;
+
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+
+  z-index: 1000;
+}
+
+/* OPEN STATE (mobile) */
+.sidebar-wrapper.open {
+  transform: translateX(0);
+}
+
+/* DESKTOP (always visible) */
+@media (min-width: 1024px) {
+  .sidebar-wrapper {
+    transform: translateX(0);
+  }
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* MAIN */
+.main-section {
+  margin-left: 240px;
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.35);
-  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1024px) {
+  .main-section {
+    margin-left: 0;
+  }
+}
+
+/* CONTENT */
+.content {
+  padding: 20px;
+  flex: 1;
 }

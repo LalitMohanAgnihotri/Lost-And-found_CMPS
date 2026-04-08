@@ -1,25 +1,28 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import Profile from "./ProfileDropdown.";
+import Profile from "../common/ProfileDropdown.";
 
 import "../../styles/navbar.css";
 
-const Navbar = ({ toggleSidebar }) => {
+const Navbar = ({
+  type = "user",
+  showSearch = true,
+  toggleSidebar,
+  isOpen,
+}) => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   const { user } = useAuth();
   const loggedIn = !!user;
 
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
+  const isAdmin = type === "admin";
 
-      if (search.trim()) {
-        navigate(`/search?q=${search}`);
-        setSearch("");
-      }
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && search.trim()) {
+      navigate(`/search?q=${search}`);
+      setSearch("");
     }
   };
 
@@ -27,11 +30,18 @@ const Navbar = ({ toggleSidebar }) => {
     <header className="navbar">
       {/* LEFT */}
       <div className="nav-left">
-        <button className="menu-btn d-lg-none" onClick={toggleSidebar}>
+        <button
+          className={`menu-btn d-lg-none ${isOpen ? "active" : ""}`}
+          onClick={toggleSidebar}
+        >
           ☰
         </button>
 
-        <Link to="/" className="brand">
+        {/* LOGO */}
+        <Link
+          to={isAdmin ? "/admin/dashboard" : "/"}
+          className="brand"
+        >
           <img src="/images/logo.png" alt="Logo" className="brand-icon" />
 
           <h4 className="brand-text">
@@ -42,16 +52,18 @@ const Navbar = ({ toggleSidebar }) => {
         </Link>
       </div>
 
-      {/* SEARCH */}
-      <div className="nav-search">
-        <input
-          type="search"
-          placeholder="Search items..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={handleSearch}
-        />
-      </div>
+      {/* SEARCH (USER ONLY) */}
+      {showSearch && !isAdmin && (
+        <div className="nav-search">
+          <input
+            type="search"
+            placeholder="Search items..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleSearch}
+          />
+        </div>
+      )}
 
       {/* RIGHT */}
       <div className="nav-right">

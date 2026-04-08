@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import AdminSidebar from "../components/admin/AdminSidebar";
-import Profile from "../components/user/ProfileDropdown.";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Footer from "../components/common/Footer";
+import Navbar from "../components/common/Navbar";
 
 import "../styles/AdminLayout.css";
 
@@ -36,46 +36,17 @@ const AdminLayout = () => {
 
       {/* Main */}
       <div className="main-section">
-        {/* Topbar */}
-        <div className="topbar">
-          <div className="topbar-left">
-            {isMobile && (
-              <button
-                className="toggle-btn"
-                onClick={() => setOpen(!open)}
-              >
-                ☰
-              </button>
-            )}
+        <Navbar
+          type="admin"
+          showSearch={false}
+          toggleSidebar={() => setOpen((prev) => !prev)}
+          isOpen={open}   // ✅ IMPORTANT
+        />
 
-            {/* BRAND */}
-            <Link to="/admin/dashboard" className="admin-brand">
-              <img
-                src="/images/logo.png"
-                alt="Logo"
-                className="brand-icon"
-              />
-
-              <h4 className="brand-text">
-                <span className="brand-lost">Lost</span>
-                <span className="brand-and"> & </span>
-                <span className="brand-found">Found</span>
-              </h4>
-            </Link>
-          </div>
-
-          {/* RIGHT */}
-          <div className="topbar-right">
-            <Profile />
-          </div>
-        </div>
-
-        {/* Content */}
         <div className="content">
           <Outlet />
         </div>
 
-        {/* Footer */}
         <Footer />
       </div>
     </div>

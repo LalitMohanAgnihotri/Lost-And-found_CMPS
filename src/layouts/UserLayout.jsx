@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../components/user/Sidebar";
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/user/Navbar";
+import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 
 import "../styles/AdminLayout.css";
+
 const UserLayout = () => {
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
@@ -23,7 +24,7 @@ const UserLayout = () => {
 
   return (
     <div className="admin-layout">
-      {/* Overlay (Mobile only) */}
+      {/* Overlay */}
       {open && isMobile && (
         <div className="overlay" onClick={() => setOpen(false)} />
       )}
@@ -33,17 +34,19 @@ const UserLayout = () => {
         <Sidebar closeSidebar={() => setOpen(false)} />
       </div>
 
-      {/* Main Section */}
+      {/* Main */}
       <div className="main-section">
-        {/* Navbar (handles toggle + profile + search) */}
-        <Navbar toggleSidebar={() => setOpen(!open)} />
+        <Navbar
+          type="user"
+          showSearch={true}
+          toggleSidebar={() => setOpen((prev) => !prev)}
+          isOpen={open}   // ✅ IMPORTANT
+        />
 
-        {/* Page Content */}
         <div className="content">
           <Outlet />
         </div>
 
-        {/* Footer */}
         <Footer />
       </div>
     </div>

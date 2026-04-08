@@ -130,3 +130,35 @@
 .icon-btn:hover {
   color: #58b6ae;
 }
+/* TOGGLE BUTTON */
+.menu-btn {
+  padding: 6px 12px;
+  border: 1px solid #222;
+  border-radius: 6px;
+
+  background: transparent;
+  color: #222;
+
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* HOVER */
+.menu-btn:hover {
+  background: #58B6AE;
+  color: white;
+  border-color: #58B6AE;
+}
+
+/* ACTIVE */
+.menu-btn.active {
+  background: #58B6AE;
+  color: white;
+  border-color: #58B6AE;
+}
+
+/* CLICK EFFECT */
+.menu-btn:active {
+  transform: scale(0.95);
+}

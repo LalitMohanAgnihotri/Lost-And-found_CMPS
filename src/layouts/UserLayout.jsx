@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 
-import "../styles/AdminLayout.css";
+import "../styles/layout.css";
 
 const UserLayout = () => {
   const [open, setOpen] = useState(false);

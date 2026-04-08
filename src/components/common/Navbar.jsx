@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Profile from "../common/ProfileDropdown.";
+import NotificationDropdown from "./NotificationDropdown";
 
 import "../../styles/navbar.css";
 
@@ -12,11 +13,12 @@ const Navbar = ({
   isOpen,
 }) => {
   const [search, setSearch] = useState("");
+  const [showNotif, setShowNotif] = useState(false);
+
   const navigate = useNavigate();
-
   const { user } = useAuth();
-  const loggedIn = !!user;
 
+  const loggedIn = !!user;
   const isAdmin = type === "admin";
 
   const handleSearch = (e) => {
@@ -37,13 +39,8 @@ const Navbar = ({
           ☰
         </button>
 
-        {/* LOGO */}
-        <Link
-          to={isAdmin ? "/admin/dashboard" : "/"}
-          className="brand"
-        >
+        <Link to={isAdmin ? "/admin/dashboard" : "/"} className="brand">
           <img src="/images/logo.png" alt="Logo" className="brand-icon" />
-
           <h4 className="brand-text">
             <span className="brand-lost">Lost</span>
             <span className="brand-and"> & </span>
@@ -52,7 +49,7 @@ const Navbar = ({
         </Link>
       </div>
 
-      {/* SEARCH (USER ONLY) */}
+      {/* SEARCH */}
       {showSearch && !isAdmin && (
         <div className="nav-search">
           <input
@@ -68,7 +65,26 @@ const Navbar = ({
       {/* RIGHT */}
       <div className="nav-right">
         {loggedIn ? (
-          <Profile />
+          <>
+            {/* 🔔 NOTIFICATION */}
+            <div className="notif-wrapper">
+              <button
+                className="icon-btn notification-btn"
+                onClick={() => setShowNotif(!showNotif)}
+              >
+                🔔
+                <span className="dot-indicator"></span>
+              </button>
+
+              {showNotif && (
+                <NotificationDropdown
+                  close={() => setShowNotif(false)}
+                />
+              )}
+            </div>
+
+            <Profile />
+          </>
         ) : (
           <Link to="/login" className="login-btn">
             Login

@@ -3,12 +3,13 @@
   display: flex;
 }
 
-/* SIDEBAR WRAPPER (controls everything) */
+/* SIDEBAR */
 .sidebar-wrapper {
   position: fixed;
-  top: 0;
+  top: 90px; /* ✅ BELOW NAVBAR */
   left: 0;
-  height: 100vh;
+
+  height: calc(100vh - 90px); /* ✅ FULL HEIGHT MINUS NAVBAR */
   width: 240px;
 
   background: #fff;
@@ -19,12 +20,12 @@
   z-index: 1000;
 }
 
-/* OPEN STATE (mobile) */
+/* OPEN (mobile) */
 .sidebar-wrapper.open {
   transform: translateX(0);
 }
 
-/* DESKTOP (always visible) */
+/* DESKTOP */
 @media (min-width: 1024px) {
   .sidebar-wrapper {
     transform: translateX(0);
@@ -34,19 +35,27 @@
 /* OVERLAY */
 .overlay {
   position: fixed;
-  inset: 0;
+  top: 90px; /* ✅ START BELOW NAVBAR */
+  left: 0;
+  right: 0;
+  bottom: 0;
+
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
 
-/* MAIN */
+/* MAIN SECTION */
 .main-section {
   margin-left: 240px;
   width: 100%;
+
   display: flex;
   flex-direction: column;
+
+  margin-top: 90px; /* ✅ PUSH BELOW NAVBAR */
 }
 
+/* MOBILE */
 @media (max-width: 1024px) {
   .main-section {
     margin-left: 0;

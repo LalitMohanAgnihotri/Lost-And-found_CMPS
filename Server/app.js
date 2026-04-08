@@ -15,6 +15,8 @@ import foundRoutes from "./routes/found.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import claimRoutes from "./routes/claim.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
+
 
 
 
@@ -30,6 +32,8 @@ app.use("/api/found", foundRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/claim", claimRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/notifications", notificationRoutes);
+
 
 
 export default app;

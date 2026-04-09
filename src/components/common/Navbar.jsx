@@ -66,8 +66,15 @@ const Navbar = ({
           ☰
         </button>
 
+        {/* ✅ BRAND RESTORED */}
         <Link to={isAdmin ? "/admin/dashboard" : "/"} className="brand">
           <img src="/images/logo.png" className="brand-icon" />
+
+          <h4 className="brand-text">
+            <span className="brand-lost">Lost</span>
+            <span className="brand-and"> & </span>
+            <span className="brand-found">Found</span>
+          </h4>
         </Link>
       </div>
 

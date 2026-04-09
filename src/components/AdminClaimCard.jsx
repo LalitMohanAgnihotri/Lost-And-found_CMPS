@@ -1,69 +1,47 @@
-import "../styles/lost.css";
+import { useState } from "react";
+import ClaimDetailsModal from "./ClaimDetailsModal";
 import "../styles/claimCard.css";
-const AdminClaimCard = ({ claim, onApprove, onReject }) => {
-  const item = claim.item;
 
+const AdminClaimCard = ({ claim, onApprove, onReject }) => {
+  const [show, setShow] = useState(false);
+
+  const item = claim.item;
   if (!item) return null;
 
   return (
-    <div className="lost-card">
-      <img src={item.image} alt={item.item} className="lost-image" />
+    <>
+      <div className="claim-card-admin">
 
-      <div className="lost-body">
-        <h5 className="lost-title">{item.item}</h5>
-        <p className="lost-desc">{item.description}</p>
+        {/* 🔥 STATUS BADGE ON TOP */}
+        <span className={`status badge-top ${claim.status}`}>
+          {claim.status}
+        </span>
 
-        <p>
-          <strong>Location:</strong> {item.location}
-        </p>
+        <img src={item.image} alt={item.item} />
 
-        <p>
-          <strong>Date Found:</strong>{" "}
-          {new Date(item.dateFound).toLocaleDateString()}
-        </p>
+        <div className="claim-body">
+          <h5 className="claim-title">{item.item}</h5>
 
-        {/* USER INFO */}
-        <p>
-          <strong>User:</strong> {claim.user?.name}
-        </p>
+          <p className="claim-location">{item.location}</p>
 
-        <p>
-          <strong>Email:</strong> {claim.user?.email}
-        </p>
-
-        {/* CLAIM MESSAGE */}
-        <p>
-          <strong>Proof:</strong> {claim.proofMessage}
-        </p>
-
-        {/* STATUS */}
-        <p>
-          <strong>Status:</strong>{" "}
-          <span className={`status ${claim.status}`}>
-            {claim.status}
-          </span>
-        </p>
-
-        {/* ACTIONS */}
-        {claim.status === "pending" && (
-          <div className="mt-2">
-            <button
-              className="btn btn-success me-2"
-              onClick={() => onApprove(claim._id)}
-            >
-              Approve
-            </button>
-
-            <button
-              className="btn btn-danger"
-              onClick={() => onReject(claim._id)}
-            >
-              Reject
-            </button>
-          </div>
-        )}
+          <button
+            className="details-btn"
+            onClick={() => setShow(true)}
+          >
+            View Details
+          </button>
+        </div>
       </div>
-    </div>
+
+      {show && (
+        <ClaimDetailsModal
+          claim={claim}
+          onClose={() => setShow(false)}
+          onApprove={onApprove}
+          onReject={onReject}
+        />
+      )}
+    </>
   );
 };
 

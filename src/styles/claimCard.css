@@ -1,8 +1,8 @@
 /* ===== CARD ===== */
 .claim-card-admin {
-  position: relative; /* 🔥 required for badge */
-  background: white;
-  border-radius: 12px;
+  position: relative;
+  background: #ffffff;
+  border-radius: 14px;
   overflow: hidden;
   transition: 0.3s ease;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -32,7 +32,7 @@
 
 .claim-location {
   font-size: 13px;
-  color: #666;
+  color: #64748b;
 }
 
 /* BUTTON */
@@ -41,12 +41,12 @@
   margin-top: 10px;
   padding: 8px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   background: #58B6AE;
   color: white;
   cursor: pointer;
   font-weight: 500;
-  transition: background 0.3s ease;
+  transition: 0.3s;
 }
 
 .details-btn:hover {
@@ -63,31 +63,30 @@
   text-transform: capitalize;
 }
 
-/* 🔥 POSITIONED BADGE */
+/* TOP BADGE */
 .badge-top {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 2;
-
   font-size: 11px;
   font-weight: 600;
   padding: 5px 12px;
-
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
 
-/* STATUS COLORS */
+/* STATUS COLORS (SOFT UI) */
 .status.pending {
-  background: #f59e0b;
+  background: #fbbf24;
 }
 
 .status.approved {
-  background: #16a34a;
+  background: #22c55e;
 }
 
 .status.rejected {
-  background: #dc2626;
+  background: #f87171;
 }
 
 /* ===== MODAL ===== */
@@ -95,99 +94,126 @@
 /* OVERLAY */
 .claim-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(3px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-
-  animation: fadeIn 0.3s ease;
+  z-index: 1500;
+  animation: fadeIn 0.25s ease;
 }
 
 /* MODAL */
 .claim-modal {
-  background: #0f172a;
-  color: white;
-  width: 600px;
+  background: #ffffff;
+  width: 550px;
   max-width: 90%;
   max-height: 85vh;
   overflow-y: auto;
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
   position: relative;
-
-  animation: scaleIn 0.3s ease;
+  animation: scaleIn 0.25s ease;
 }
 
 /* IMAGE */
 .modal-image {
   width: 100%;
-  height: 240px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  border-radius: 16px 16px 0 0;
+}
+
+/* BODY */
+.modal-body {
+  padding: 18px;
+}
+
+/* TITLE */
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* DESC */
+.modal-desc {
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+/* SECTION */
+.modal-section {
+  margin-top: 15px;
+}
+
+.modal-section h5 {
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
 /* CLOSE BUTTON */
 .modal-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: #1e293b;
+  top: 10px;
+  right: 10px;
+  background: #f1f5f9;
   border: none;
-  color: white;
-  font-size: 18px;
-  width: 35px;
-  height: 35px;
   border-radius: 50%;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
 }
 
 .modal-close:hover {
-  background: #334155;
+  background: #e2e8f0;
 }
 
-/* TEXT */
-.modal-desc {
-  color: #cbd5f5;
-}
-
-/* PROOF */
+/* PROOF BOX */
 .proof-box {
-  background: #1e293b;
+  background: #f1f5f9;
   padding: 10px;
-  border-radius: 6px;
+  border-radius: 8px;
+  margin-top: 5px;
+  font-size: 13px;
 }
 
-/* ACTIONS */
+/* ACTION BUTTONS */
 .modal-actions {
   display: flex;
   gap: 10px;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .modal-actions button {
   flex: 1;
   padding: 10px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
   font-weight: 500;
+  transition: 0.2s;
 }
 
+/* BUTTON COLORS */
 .approve {
-  background: #16a34a;
+  background: #22c55e;
   color: white;
+}
+
+.approve:hover {
+  background: #16a34a;
 }
 
 .reject {
-  background: #dc2626;
+  background: #ef4444;
   color: white;
+}
+
+.reject:hover {
+  background: #dc2626;
 }
 
 /* SPINNER */
@@ -201,7 +227,7 @@
   animation: spin 0.6s linear infinite;
 }
 
-/* ANIMATION */
+/* ===== ANIMATIONS ===== */
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -215,7 +241,7 @@
 
 @keyframes scaleIn {
   from {
-    transform: scale(0.9) translateY(20px);
+    transform: scale(0.95);
     opacity: 0;
   }
   to {
@@ -241,4 +267,19 @@
   .claims-grid {
     grid-template-columns: 1fr;
   }
+}
+.claim-user {
+  font-size: 13px;
+  color: #475569;
+}
+
+.claim-date {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.claim-proof {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
 }

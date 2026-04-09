@@ -1,6 +1,6 @@
 # 🔍 Lost & Found System (MERN Stack)
 
-A full-stack **Lost & Found Management System** built using the MERN stack, designed to help users report lost items, find matching items, and manage claims with real-time notifications and email alerts.
+A full-stack **Lost & Found Management System** built using the MERN stack, designed to help users report lost items, find matching items, and manage claims with notifications and admin moderation.
 
 ---
 
@@ -26,42 +26,67 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
 
 ## 🧑‍💼 Admin Features
 
-* Dashboard to manage:
+### 📊 Admin Dashboard
 
-  * Users
-  * Items
-  * Claims
-* Approve / Reject claims
-* Receive notifications for:
+* Clean and modern dashboard UI
+* Overview of:
 
-  * New claim requests
-* Automatically resolve items after approval
+  * Total Lost Items
+  * Total Found Items
+  * Total Claims
+
+### 📈 Data Visualization
+
+* 📊 Bar Chart → Claims Overview
+* 🍩 Donut Chart → Claims Distribution
+
+### 🧾 Claim Management
+
+* View claim requests in card format
+* Open detailed modal with:
+
+  * Item details
+  * Claimed by (user info)
+  * Proof message
+
+* Actions:
+
+  * ✅ Approve claim
+  * ❌ Reject claim
+
+### ⚡ Smart UI Behavior
+
+* Instant UI update after approval/rejection
+* Status badges (Pending / Approved / Rejected)
+* Role-based UI (no claim button for admin)
 
 ---
 
 ## 🔔 Notification System (Core Feature)
 
-* Real-time-like notification system (polling-based)
+* Polling-based real-time notification system
 * Types:
 
   * `match` → when found item matches lost item
   * `claim` → claim request / approval / rejection
-* Features:
 
-  * 🔴 Unread indicator (dot)
-  * Mark all as read
-  * Filter tabs (All / Claims / Matches)
-  * Admin-specific "Claim Requests"
+### Features:
+
+* 🔴 Unread indicator (dot)
+* Mark all as read
+* Filter tabs (All / Claims / Matches)
+* Admin-specific "Claim Requests"
 
 ---
 
 ## 📧 Email System
 
 * Automated emails using Nodemailer
-* Triggers:
 
-  * Match found
-  * Claim approved / rejected
+### Triggers:
+
+* Match found
+* Claim approved / rejected
 
 ---
 
@@ -72,7 +97,18 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
   * Item name
   * Location
 * Prevents duplicate notifications
-* Works instantly when a found item is reported
+* Runs automatically when a found item is reported
+
+---
+
+# 🎨 UI / UX Highlights
+
+* Modern card-based UI
+* Responsive grid layout
+* Interactive dashboard charts
+* Smooth hover effects & animations
+* Modal-based workflows for clean UX
+* Role-based rendering (User vs Admin)
 
 ---
 
@@ -83,7 +119,8 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
 * React.js
 * React Router
 * Axios
-* Tailwind / Custom CSS
+* Recharts (Charts)
+* Custom CSS (Modern UI)
 * Lucide Icons
 
 ## Backend
@@ -105,73 +142,78 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
 
 ## Backend
 
-```
+
 Server/
 │── models/
-│   ├── Users.js
-│   ├── Lost.js
-│   ├── Found.js
-│   ├── Claim.js
-│   ├── Notification.js
+│ ├── Users.js
+│ ├── Lost.js
+│ ├── Found.js
+│ ├── Claim.js
+│ ├── Notification.js
 │
 │── controllers/
-│   ├── lost.controller.js
-│   ├── found.controller.js
-│   ├── claim.controller.js
-│   ├── user.controller.js
+│ ├── lost.controller.js
+│ ├── found.controller.js
+│ ├── claim.controller.js
+│ ├── user.controller.js
 │
 │── services/
-│   ├── match.service.js
-│   ├── claim.service.js
+│ ├── match.service.js
+│ ├── claim.service.js
 │
 │── routes/
-│   ├── auth.routes.js
-│   ├── lost.routes.js
-│   ├── found.routes.js
-│   ├── claim.routes.js
-│   ├── notification.routes.js
+│ ├── auth.routes.js
+│ ├── lost.routes.js
+│ ├── found.routes.js
+│ ├── claim.routes.js
+│ ├── notification.routes.js
 │
 │── config/
-│   ├── db.js
-│   ├── mail.config.js
-│   ├── cloudinary.js
+│ ├── db.js
+│ ├── mail.config.js
+│ ├── cloudinary.js
 │
 │── middlewares/
-│   ├── auth.middleware.js
-│   ├── upload.middleware.js
+│ ├── auth.middleware.js
+│ ├── upload.middleware.js
 │
 │── app.js
 │── server.js
-```
+
 
 ---
 
 ## Frontend
 
-```
+
 Client/
 │── src/
-│   ├── api/
-│   │   ├── axios.js
-│   │   ├── notification.js
-│   │
-│   ├── components/
-│   │   ├── common/
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── NotificationDropdown.jsx
-│   │   │   ├── ProfileDropdown.jsx
-│   │   │
-│   │   ├── user/
-│   │   ├── admin/
-│   │
-│   ├── pages/
-│   ├── layouts/
-│   ├── context/
-│   ├── styles/
+│ ├── api/
+│ │ ├── axios.js
+│ │ ├── notification.js
+│ │
+│ ├── components/
+│ │ ├── common/
+│ │ │ ├── Navbar.jsx
+│ │ │ ├── NotificationDropdown.jsx
+│ │ │ ├── ProfileDropdown.jsx
+│ │ │
+│ │ ├── user/
+│ │ ├── admin/
+│ │ ├── AdminClaimCard.jsx
+│ │ ├── ClaimDetailsModal.jsx
+│ │ ├── ClaimsChart.jsx
+│ │ ├── ClaimsPieChart.jsx
+│ │ ├── StatsCard.jsx
+│
+│ ├── pages/
+│ ├── layouts/
+│ ├── context/
+│ ├── styles/
 │
 │── App.jsx
 │── main.jsx
-```
+
 
 ---
 
@@ -193,76 +235,46 @@ Client/
 ```bash
 git clone https://github.com/LalitMohanAgnihotri/Lost-And-found_CMPS
 cd lost-found-system
-```
 
----
-
-## 2. Backend Setup
-
-```bash
+2. Backend Setup
 cd Server
 npm install
-```
-
-### Create `.env`
-
-```
+Create .env
 PORT=3000
 MONGO_URI=your_mongodb_url
 JWT_SECRET=your_secret
 EMAIL_USER=your_email
 EMAIL_PASS=your_password
-```
-
-### Run server
-
-```bash
+Run server
 node server.js
-```
 
----
-
-## 3. Frontend Setup
-
-```bash
+3. Frontend Setup
 cd Client
 npm install
 npm run dev
-```
-
----
-
-# 🧪 Key Learning Outcomes
+🧪 Key Learning Outcomes
 
 This project demonstrates:
 
-* 🔄 Full-stack integration (React + Express + MongoDB)
-* 🔐 Authentication & authorization (JWT)
-* 📡 API design and RESTful architecture
-* 🔔 Notification system design
-* 📧 Email automation workflows
-* 🧠 Backend service abstraction (clean architecture)
-* 🧩 State management & UI synchronization
-* 🐛 Debugging real-world issues (auth, routes, async bugs)
+🔄 Full-stack MERN integration
+🔐 Authentication & authorization (JWT)
+📡 RESTful API design
+🔔 Notification system architecture
+📧 Email automation workflows
+📊 Data visualization with charts
+🎨 UI/UX design principles
+🧩 State management & async handling
+🐛 Debugging real-world issues
+🚀 Future Improvements
+🔴 Real-time notifications using Socket.IO
+📱 Enhanced mobile responsiveness
+🔎 Advanced filtering & search
+📊 More admin analytics
+🤖 AI-based smart matching
 
----
+👨‍💻 Author
+Lalit Agnihotri
 
-# 🚀 Future Improvements
-
-* 🔴 Real-time notifications using Socket.IO
-* 📱 Mobile responsiveness enhancement
-* 📊 Admin analytics dashboard
-* 🔎 AI-based smart matching
-* 🔔 Push notifications
-
----
-
-# 👨‍💻 Author
-
-**Lalit Agnihotri**
-
----
-
-# ⭐ If you like this project
+If you like this project
 
 Give it a ⭐ on GitHub and feel free to contribute!

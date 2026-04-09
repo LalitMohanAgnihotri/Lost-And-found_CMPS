@@ -1,83 +1,102 @@
 .admin-dashboard {
-  background: #f8f9fa;
+  /* background: #f8fafc; */
   padding: 20px;
 }
 
-/* SECTION TITLE */
+/* HEADER */
+.dashboard-header h2 {
+  font-weight: 700;
+}
+
+.dashboard-header p {
+  color: #64748b;
+}
+
+/* SECTION */
 .section-title {
   margin: 25px 0 12px;
-  font-weight: 650;
+  font-weight: 700;
   font-size: larger;
 }
 
-/* ✅ GRID LAYOUT (MAIN FIX) */
+/* GRID */
 .grid-layout {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
+  gap: 20px;
 }
 
-/* ✅ TABLET */
 @media (max-width: 992px) {
   .grid-layout {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* ✅ MOBILE */
 @media (max-width: 576px) {
   .grid-layout {
     grid-template-columns: 1fr;
   }
 }
 
-/* STAT CARDS */
-.stat-card {
-  background: #fff;
-  border-radius: 14px;
-  padding: 25px;
-  text-align: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  transition: 0.2s;
-}
-
-.stat-card h6 {
-  color: #888;
-}
-
-.stat-card h3 {
-  font-weight: bold;
-}
-
-.stat-card:hover {
-  transform: translateY(-4px);
-}
-/* FORCE SAME LINE ALWAYS */
+/* STATS */
 .stats-row {
   display: flex;
   gap: 15px;
+  margin-bottom: 20px;
 }
 
-/* EACH CARD TAKES EQUAL WIDTH */
-.stat-item {
+.stat-card {
   flex: 1;
+  background: linear-gradient(135deg, #ffffff, #f1f5f9);
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.04);
 }
 
-/* SMALL SCREEN FIX */
-@media (max-width: 576px) {
-  .stats-row {
-    gap: 10px;
-  }
+/* CHART LAYOUT */
+.charts-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 25px;
+}
 
-  .stat-card {
-    padding: 15px;
+@media (max-width: 768px) {
+  .charts-row {
+    grid-template-columns: 1fr;
   }
+}
 
-  .stat-card h3 {
-    font-size: 18px;
-  }
+/* CHART CARD */
+.chart-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+  transition: 0.3s ease;
+}
 
-  .stat-card h6 {
-    font-size: 12px;
-  }
+.chart-card:hover {
+  transform: translateY(-3px);
+}
+
+/* TITLE */
+.chart-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* LEGEND FIX */
+.recharts-legend-item text {
+  fill: #475569 !important;
+  font-size: 13px;
+}
+
+/* CHART BACKGROUND */
+.recharts-wrapper {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 10px;
 }

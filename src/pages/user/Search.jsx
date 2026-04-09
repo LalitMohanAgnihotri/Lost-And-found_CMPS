@@ -27,18 +27,18 @@ const Search = () => {
 
       try {
         const lostRes = await fetch(
-          `http://localhost:3000/api/lost?search=${query}`,
+          `http://localhost:3000/api/lost?search=${query}`
         );
 
         const foundRes = await fetch(
-          `http://localhost:3000/api/found?search=${query}`,
+          `http://localhost:3000/api/found?search=${query}`
         );
 
         const lostData = await lostRes.json();
         const foundData = await foundRes.json();
 
-        setLostItems(lostData);
-        setFoundItems(foundData);
+        setLostItems(lostData.data || lostData);
+        setFoundItems(foundData.data || foundData);
       } catch (err) {
         console.error(err);
       }
@@ -49,7 +49,7 @@ const Search = () => {
     fetchData();
   }, [query]);
 
-  if (!query) {
+  if (!query || query.trim() === "") {
     return (
       <div className="lost-container">
         <h2 className="page-title">Search</h2>
@@ -72,9 +72,9 @@ const Search = () => {
         <>
           <h3>Lost Items</h3>
 
-          <div className="lost-grid">
+          <div className="card-grid">
             {lostItems.map((item) => (
-              <LostCard key={item._id} item={item} />
+              <LostCard key={item._id || item.id} item={item} />
             ))}
           </div>
         </>
@@ -84,9 +84,9 @@ const Search = () => {
         <>
           <h3 className="mt-4">Found Items</h3>
 
-          <div className="lost-grid">
+          <div className="card-grid">
             {foundItems.map((item) => (
-              <FoundCard key={item._id} item={item} />
+              <FoundCard key={item._id || item.id} item={item} />
             ))}
           </div>
         </>

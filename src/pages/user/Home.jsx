@@ -40,12 +40,6 @@ const Home = () => {
           </p>
         </div>
       </section>
-      <h5 className="mt-5">Recent Lost Items</h5>
-      <div className="card-grid">
-        {lost.map((item) => (
-          <LostCard key={item._id} item={item} />
-        ))}
-      </div>
 
       <h5 className="mt-5">Recent Found Items</h5>
 
@@ -56,6 +50,14 @@ const Home = () => {
           <p className="text-muted">No unresolved found items yet.</p>
         )}
       </div>
+      
+      <h5 className="mt-5">Recent Lost Items</h5>
+      <div className="card-grid">
+        {lost.map((item) => (
+          <LostCard key={item._id} item={item} />
+        ))}
+      </div>
+      
     </>
   );
 };

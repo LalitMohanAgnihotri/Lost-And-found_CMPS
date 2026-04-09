@@ -191,7 +191,7 @@ Client/
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/lost-found-system.git
+git clone https://github.com/LalitMohanAgnihotri/Lost-And-found_CMPS
 cd lost-found-system
 ```
 

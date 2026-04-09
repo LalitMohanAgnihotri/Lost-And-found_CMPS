@@ -159,3 +159,38 @@
     width: 30px;
   }
 }
+/* 🔔 NOTIFICATION BUTTON */
+.notification-btn {
+  position: relative;
+  font-size: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  color: #444; /* ✅ removed golden look */
+  transition: 0.2s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-btn:hover {
+  color: #58B6AE; /* nice theme hover */
+}
+
+/* 🔴 RED DOT (FIXED) */
+.dot-indicator {
+  position: absolute;
+
+  top: 2px;
+  right: 2px;
+
+  width: 8px;
+  height: 8px;
+
+  background: #ff3b30;
+  border-radius: 50%;
+
+  border: 2px solid white;
+}

@@ -1,8 +1,9 @@
 import Claim from "../models/Claim.js";
 import Found from "../models/Found.js";
+import Notification from "../models/Notification.js";
+import User from "../models/Users.js";
 import { handleClaimDecision } from "../services/claim.service.js";
 
-// GET ALL CLAIMS WITH ITEM DATA
 export const getAllClaims = async (req, res) => {
   try {
     const claims = await Claim.find()
@@ -12,7 +13,6 @@ export const getAllClaims = async (req, res) => {
     const updated = await Promise.all(
       claims.map(async (c) => {
         const item = await Found.findById(c.itemId);
-
         return {
           ...c.toObject(),
           item,
@@ -39,7 +39,7 @@ export const createClaim = async (req, res) => {
 
     if (existing) {
       return res.status(400).json({
-        message: "You already claimed this item",
+        message: "Already claimed",
       });
     }
 
@@ -51,65 +51,45 @@ export const createClaim = async (req, res) => {
 
     await claim.save();
 
-    res.status(201).json({
-      message: "Claim submitted successfully",
-      claim,
-    });
+    // 🔔 ADMIN NOTIFICATION
+    const admins = await User.find({ role: "ADMIN" });
+
+    for (const admin of admins) {
+      await Notification.create({
+        user: admin._id,
+        title: "New Claim Request",
+        message: "A user requested to claim an item",
+        type: "claim",
+      });
+    }
+
+    res.json({ message: "Claim submitted", claim });
 
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// ✅ APPROVE CLAIM (FIXED)
+// APPROVE
 export const approveClaim = async (req, res) => {
-  try {
-    const claim = await Claim.findById(req.params.id);
+  const claim = await Claim.findById(req.params.id);
+  if (!claim) return res.status(404).json({ message: "Not found" });
 
-    if (!claim) return res.status(404).json({ message: "Not found" });
+  await handleClaimDecision(claim._id, "approved");
 
-    // 🔥 PREVENT DUPLICATE APPROVAL
-    if (claim.status === "approved") {
-      return res.status(400).json({
-        message: "Already approved",
-      });
-    }
+  await Found.findByIdAndUpdate(claim.itemId, {
+    isResolved: true,
+  });
 
-    // 🔥 CALL SERVICE (handles email + notification)
-    await handleClaimDecision(claim._id, "approved");
-
-    // KEEP YOUR ORIGINAL LOGIC
-    await Found.findByIdAndUpdate(claim.itemId, {
-      isResolved: true,
-    });
-
-    res.json({ message: "Approved" });
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  res.json({ message: "Approved" });
 };
 
-// ✅ REJECT CLAIM (FIXED)
+// REJECT
 export const rejectClaim = async (req, res) => {
-  try {
-    const claim = await Claim.findById(req.params.id);
+  const claim = await Claim.findById(req.params.id);
+  if (!claim) return res.status(404).json({ message: "Not found" });
 
-    if (!claim) return res.status(404).json({ message: "Not found" });
+  await handleClaimDecision(claim._id, "rejected");
 
-    // 🔥 PREVENT DUPLICATE REJECTION
-    if (claim.status === "rejected") {
-      return res.status(400).json({
-        message: "Already rejected",
-      });
-    }
-
-    // 🔥 CALL SERVICE (handles email + notification)
-    await handleClaimDecision(claim._id, "rejected");
-
-    res.json({ message: "Rejected" });
-
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+  res.json({ message: "Rejected" });
 };

@@ -7,14 +7,16 @@ const notificationSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    title: {
+    title: String,
+    message: String,
+
+    // ✅ IMPORTANT
+    type: {
       type: String,
-      required: true,
+      enum: ["claim", "match"],
+      default: "match",
     },
-    message: {
-      type: String,
-      required: true,
-    },
+
     read: {
       type: Boolean,
       default: false,

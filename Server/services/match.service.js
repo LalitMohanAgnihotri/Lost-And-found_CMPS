@@ -18,25 +18,20 @@ export const checkMatchAndNotify = async (foundItem) => {
         foundItem.location.toLowerCase().trim();
 
       if (itemMatch && locationMatch) {
-        // 🔥 CHECK IF ALREADY NOTIFIED
         const existingNotification = await Notification.findOne({
           user: lost.reportedBy._id,
-          message: `Match found for your lost item "${lost.item}"`,
+          message: `We found a match for your lost item "${lost.item}"`,
         });
 
-        if (existingNotification) {
-          console.log("⚠️ Already notified, skipping...");
-          continue;
-        }
+        if (existingNotification) continue;
 
-        // 🔔 CREATE NOTIFICATION
         await Notification.create({
           user: lost.reportedBy._id,
           title: "Match Found",
-          message: `Match found for your lost item "${lost.item}"`,
+          message: `We found a match for your lost item "${lost.item}"`,
+          type: "match",
         });
 
-        // 📧 SEND EMAIL
         await sendMail({
           to: lost.contactEmail,
           subject: "🔔 Match Found!",

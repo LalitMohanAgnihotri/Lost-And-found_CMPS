@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Bell } from "lucide-react";
+
 import { useAuth } from "../../context/AuthContext";
 import Profile from "../common/ProfileDropdown.";
 import NotificationDropdown from "./NotificationDropdown";
+import {
+  getNotifications,
+  markAllRead,
+} from "../../api/notification";
 
 import "../../styles/navbar.css";
 
@@ -14,12 +20,34 @@ const Navbar = ({
 }) => {
   const [search, setSearch] = useState("");
   const [showNotif, setShowNotif] = useState(false);
+  const [hasNotif, setHasNotif] = useState(false);
 
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  const loggedIn = !!user;
   const isAdmin = type === "admin";
+
+  // 🔔 REAL-TIME CHECK
+  useEffect(() => {
+    const fetchNotif = async () => {
+      const data = await getNotifications();
+      const unread = data.filter((n) => !n.read);
+      setHasNotif(unread.length > 0);
+    };
+
+    fetchNotif();
+
+    const interval = setInterval(fetchNotif, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // 🔥 MARK READ
+  useEffect(() => {
+    if (showNotif) {
+      markAllRead();
+      setHasNotif(false);
+    }
+  }, [showNotif]);
 
   const handleSearch = (e) => {
     if (e.key === "Enter" && search.trim()) {
@@ -30,66 +58,49 @@ const Navbar = ({
 
   return (
     <header className="navbar">
-      {/* LEFT */}
       <div className="nav-left">
         <button
-          className={`menu-btn d-lg-none ${isOpen ? "active" : ""}`}
+          className={`menu-btn ${isOpen ? "active" : ""}`}
           onClick={toggleSidebar}
         >
           ☰
         </button>
 
         <Link to={isAdmin ? "/admin/dashboard" : "/"} className="brand">
-          <img src="/images/logo.png" alt="Logo" className="brand-icon" />
-          <h4 className="brand-text">
-            <span className="brand-lost">Lost</span>
-            <span className="brand-and"> & </span>
-            <span className="brand-found">Found</span>
-          </h4>
+          <img src="/images/logo.png" className="brand-icon" />
         </Link>
       </div>
 
-      {/* SEARCH */}
       {showSearch && !isAdmin && (
         <div className="nav-search">
           <input
-            type="search"
-            placeholder="Search items..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={handleSearch}
+            placeholder="Search..."
           />
         </div>
       )}
 
-      {/* RIGHT */}
       <div className="nav-right">
-        {loggedIn ? (
-          <>
-            {/* 🔔 NOTIFICATION */}
-            <div className="notif-wrapper">
-              <button
-                className="icon-btn notification-btn"
-                onClick={() => setShowNotif(!showNotif)}
-              >
-                🔔
-                <span className="dot-indicator"></span>
-              </button>
+        <div className="notif-wrapper">
+          <button
+            className="notification-btn"
+            onClick={() => setShowNotif(!showNotif)}
+          >
+            <Bell size={20} />
+            {hasNotif && <span className="dot-indicator"></span>}
+          </button>
 
-              {showNotif && (
-                <NotificationDropdown
-                  close={() => setShowNotif(false)}
-                />
-              )}
-            </div>
+          {showNotif && (
+            <NotificationDropdown
+              close={() => setShowNotif(false)}
+              isAdmin={isAdmin}
+            />
+          )}
+        </div>
 
-            <Profile />
-          </>
-        ) : (
-          <Link to="/login" className="login-btn">
-            Login
-          </Link>
-        )}
+        <Profile />
       </div>
     </header>
   );

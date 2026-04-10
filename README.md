@@ -4,111 +4,103 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
 
 ---
 
-# 🚀 Live Features
+# 🚀 Features
 
 ## 👤 User Features
 
-* Report lost items with image upload
-* Report found items
-* Search items using keyword/location
-* Claim found items with proof
-* Receive:
+- Report lost items with image upload
+- Report found items
+- Search items using keyword/location
+- Claim found items with proof
+- Track:
+  - Lost items
+  - Found items
+  - Claim status (Pending / Approved / Rejected)
 
-  * 📧 Email notifications
-  * 🔔 In-app notifications (match + claim updates)
-* Track:
+### 🔐 Authentication
 
-  * Lost items
-  * Found items
-  * Claim status (Pending / Approved / Rejected)
+- JWT-based login/signup
+- Role-based access (USER / ADMIN)
+
+### 🔑 Forgot Password 
+
+- Email-based OTP verification
+- 6-digit OTP system
+- Reset password securely
+- Frontend + Backend integrated flow
 
 ---
 
 ## 🧑‍💼 Admin Features
 
-### 📊 Admin Dashboard
+### 📊 Dashboard
 
-* Clean and modern dashboard UI
-* Overview of:
-
-  * Total Lost Items
-  * Total Found Items
-  * Total Claims
+- Overview of:
+  - Total Lost Items
+  - Total Found Items
+  - Total Claims
 
 ### 📈 Data Visualization
 
-* 📊 Bar Chart → Claims Overview
-* 🍩 Donut Chart → Claims Distribution
+- 📊 Bar Chart → Claims Overview
+- 🍩 Donut Chart → Claims Distribution
 
 ### 🧾 Claim Management
 
-* View claim requests in card format
-* Open detailed modal with:
+- View claim requests
+- Detailed modal with:
+  - Item details
+  - User info
+  - Proof message
 
-  * Item details
-  * Claimed by (user info)
-  * Proof message
-
-* Actions:
-
-  * ✅ Approve claim
-  * ❌ Reject claim
-
-### ⚡ Smart UI Behavior
-
-* Instant UI update after approval/rejection
-* Status badges (Pending / Approved / Rejected)
-* Role-based UI (no claim button for admin)
+- Actions:
+  - ✅ Approve
+  - ❌ Reject
 
 ---
 
-## 🔔 Notification System (Core Feature)
+## 🔔 Notification System
 
-* Polling-based real-time notification system
-* Types:
+- Polling-based real-time notifications
 
-  * `match` → when found item matches lost item
-  * `claim` → claim request / approval / rejection
+### Types:
+- `match` → when found item matches lost item
+- `claim` → claim request / approval / rejection
 
 ### Features:
-
-* 🔴 Unread indicator (dot)
-* Mark all as read
-* Filter tabs (All / Claims / Matches)
-* Admin-specific "Claim Requests"
+- 🔴 Unread indicator
+- Mark all as read
+- Filter tabs (All / Claims / Matches)
 
 ---
 
 ## 📧 Email System
 
-* Automated emails using Nodemailer
+- Automated emails using Nodemailer
 
 ### Triggers:
-
-* Match found
-* Claim approved / rejected
-
----
-
-# 🧠 Smart Matching Logic
-
-* Matches based on:
-
-  * Item name
-  * Location
-* Prevents duplicate notifications
-* Runs automatically when a found item is reported
+- Match found
+- Claim approved / rejected
+- 🔑 Password reset OTP (NEW)
 
 ---
 
-# 🎨 UI / UX Highlights
+## 🧠 Smart Matching Logic
 
-* Modern card-based UI
-* Responsive grid layout
-* Interactive dashboard charts
-* Smooth hover effects & animations
-* Modal-based workflows for clean UX
-* Role-based rendering (User vs Admin)
+- Based on:
+  - Item name
+  - Location
+- Prevents duplicate notifications
+
+---
+
+## 🎨 UI / UX Highlights
+
+- Modern card-based UI
+- Responsive layout
+- Interactive charts
+- Smooth animations
+- Role-based rendering
 
 ---
 
@@ -116,25 +108,24 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
 
 ## Frontend
 
-* React.js
-* React Router
-* Axios
-* Recharts (Charts)
-* Custom CSS (Modern UI)
-* Lucide Icons
+- React.js
+- React Router
+- Axios
+- Recharts
+- Lucide Icons
 
 ## Backend
 
-* Node.js
-* Express.js
-* MongoDB + Mongoose
+- Node.js
+- Express.js
+- MongoDB + Mongoose
 
-## Other Tools
+## Tools
 
-* Cloudinary (image upload)
-* Multer (file handling)
-* Nodemailer (email service)
-* JWT (authentication)
+- Cloudinary (image upload)
+- Multer (file handling)
+- Nodemailer (email service)
+- JWT (authentication)
 
 ---
 
@@ -142,139 +133,124 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
 
 ## Backend
 
-
+```bash
 Server/
-│── models/
-│ ├── Users.js
-│ ├── Lost.js
-│ ├── Found.js
-│ ├── Claim.js
-│ ├── Notification.js
+├── models/
+│   ├── Users.js
+│   ├── Lost.js
+│   ├── Found.js
+│   ├── Claim.js
+│   ├── Notification.js
 │
-│── controllers/
-│ ├── lost.controller.js
-│ ├── found.controller.js
-│ ├── claim.controller.js
-│ ├── user.controller.js
+├── controllers/
+│   ├── auth.controller.js   
+│   ├── lost.controller.js
+│   ├── found.controller.js
+│   ├── claim.controller.js
+│   ├── user.controller.js
 │
-│── services/
-│ ├── match.service.js
-│ ├── claim.service.js
+├── services/
+│   ├── match.service.js
+│   ├── claim.service.js
 │
-│── routes/
-│ ├── auth.routes.js
-│ ├── lost.routes.js
-│ ├── found.routes.js
-│ ├── claim.routes.js
-│ ├── notification.routes.js
+├── routes/
+│   ├── auth.routes.js       
+│   ├── lost.routes.js
+│   ├── found.routes.js
+│   ├── claim.routes.js
+│   ├── notification.routes.js
 │
-│── config/
-│ ├── db.js
-│ ├── mail.config.js
-│ ├── cloudinary.js
+├── config/
+│   ├── db.js
+│   ├── mail.config.js
+│   ├── cloudinary.js
 │
-│── middlewares/
-│ ├── auth.middleware.js
-│ ├── upload.middleware.js
+├── middlewares/
+│   ├── auth.middleware.js
+│   ├── upload.middleware.js
 │
-│── app.js
-│── server.js
-
-
----
-
-## Frontend
-
+├── app.js
+└── server.js
 
 Client/
-│── src/
-│ ├── api/
-│ │ ├── axios.js
-│ │ ├── notification.js
-│ │
-│ ├── components/
-│ │ ├── common/
-│ │ │ ├── Navbar.jsx
-│ │ │ ├── NotificationDropdown.jsx
-│ │ │ ├── ProfileDropdown.jsx
-│ │ │
-│ │ ├── user/
-│ │ ├── admin/
-│ │ ├── AdminClaimCard.jsx
-│ │ ├── ClaimDetailsModal.jsx
-│ │ ├── ClaimsChart.jsx
-│ │ ├── ClaimsPieChart.jsx
-│ │ ├── StatsCard.jsx
+├── src/
+│   ├── api/
+│   │   ├── axios.js
+│   │   ├── notification.js
 │
-│ ├── pages/
-│ ├── layouts/
-│ ├── context/
-│ ├── styles/
+│   ├── components/
+│   │   ├── common/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── NotificationDropdown.jsx
+│   │   │   ├── ProfileDropdown.jsx
+│   │
+│   │   ├── admin/
+│   │   ├── user/
+│   │   ├── AdminClaimCard.jsx
+│   │   ├── ClaimDetailsModal.jsx
+│   │   ├── ClaimsChart.jsx
+│   │   ├── ClaimsPieChart.jsx
+│   │   ├── StatsCard.jsx
 │
-│── App.jsx
-│── main.jsx
+│   ├── pages/
+│   │   ├── auth/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Signup.jsx
+│   │   │   ├── ForgotPassword.jsx  # NEW
+│
+│   ├── layouts/
+│   ├── context/
+│   ├── styles/
+│
+├── App.jsx
+└── main.jsx
 
+⚙️ Setup Instructions
 
----
-
-# 🔐 Authentication
-
-* JWT-based authentication
-* Role-based access:
-
-  * USER
-  * ADMIN
-* Protected routes (frontend + backend)
-
----
-
-# ⚙️ Setup Instructions
-
-## 1. Clone the Repository
-
-```bash
+1. Clone Repo
 git clone https://github.com/LalitMohanAgnihotri/Lost-And-found_CMPS
-cd lost-found-system
+cd Lost-And-found_CMPS
 
 2. Backend Setup
 cd Server
 npm install
+
 Create .env
 PORT=3000
 MONGO_URI=your_mongodb_url
 JWT_SECRET=your_secret
+
 EMAIL_USER=your_email
-EMAIL_PASS=your_password
-Run server
+EMAIL_PASS=your_app_password
+
+CLOUD_NAME=your_cloudinary
+CLOUDINARY_API_KEY=your_key
+CLOUDINARY_API_SECRET=your_secret
+
 node server.js
 
 3. Frontend Setup
 cd Client
 npm install
 npm run dev
-🧪 Key Learning Outcomes
 
-This project demonstrates:
+🧪 Key Learnings
+Full MERN stack integration
+JWT authentication
+OTP-based password reset
+Email automation
+Notification system design
+UI/UX development
+Debugging real-world issues
 
-🔄 Full-stack MERN integration
-🔐 Authentication & authorization (JWT)
-📡 RESTful API design
-🔔 Notification system architecture
-📧 Email automation workflows
-📊 Data visualization with charts
-🎨 UI/UX design principles
-🧩 State management & async handling
-🐛 Debugging real-world issues
+
 🚀 Future Improvements
-🔴 Real-time notifications using Socket.IO
-📱 Enhanced mobile responsiveness
-🔎 Advanced filtering & search
-📊 More admin analytics
-🤖 AI-based smart matching
+Real-time notifications (Socket.IO)
+Advanced search filters
+Mobile responsiveness
+AI-based matching
 
 👨‍💻 Author
-Lalit Agnihotri
+Lalit Mohan Agnihotri
 
-If you like this project
-
-Give it a ⭐ on GitHub and feel free to contribute!
+⭐ If you like this project, give it a star!

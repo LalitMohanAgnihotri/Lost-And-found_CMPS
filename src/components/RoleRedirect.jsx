@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const AdminRoute = ({ children }) => {
+const RoleRedirect = () => {
   const { user, loading } = useAuth();
 
   if (loading) return null;
@@ -10,11 +10,11 @@ const AdminRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (user.role !== "ADMIN") {
-    return <Navigate to="/" replace />;
+  if (user.role === "ADMIN") {
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
-  return children;
+  return <Navigate to="/home" replace />;
 };
 
-export default AdminRoute;
+export default RoleRedirect;

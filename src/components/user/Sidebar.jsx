@@ -15,7 +15,7 @@ const Sidebar = ({ closeSidebar }) => {
         {/* MAIN */}
         <p className="section-title">MAIN</p>
 
-        <NavLink to="/" className={getLinkClass} onClick={handleClick}>
+        <NavLink to="/home" className={getLinkClass} onClick={handleClick}>
           <span>🏠</span> Home
         </NavLink>
 

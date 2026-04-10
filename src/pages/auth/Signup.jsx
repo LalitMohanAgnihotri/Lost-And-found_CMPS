@@ -1,14 +1,12 @@
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import api from "../../api/axios";
+import { useAuth } from "../../context/AuthContext";
 import "../../styles/Auth.css";
 
 const Signup = () => {
-  const location = useLocation();
+  const { signup } = useAuth();
   const navigate = useNavigate();
-
-  const from = location.state?.from || "/";
 
   const [form, setForm] = useState({
     name: "",
@@ -27,15 +25,13 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const res = await api.post("/auth/signup", form);
+      const user = await signup(form);
 
-      const { token, user } = res.data;
-
-      // Save auth data
-      localStorage.setItem("token", token);
-      localStorage.setItem("role", user.role);
-
-      navigate(from, { replace: true });
+      if (user.role === "ADMIN") {
+        navigate("/admin/dashboard", { replace: true });
+      } else {
+        navigate("/home", { replace: true });
+      }
 
     } catch (err) {
       console.error(err);

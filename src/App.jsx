@@ -9,6 +9,8 @@ import AdminLayout from "./layouts/AdminLayout";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
+import UserRoute from "./components/UserRoute";
+import RoleRedirect from "./components/RoleRedirect"; // ✅ NEW
 
 import Home from "./pages/user/Home";
 import Lost from "./pages/user/Lost";
@@ -33,7 +35,6 @@ import "./App.css";
 const App = () => {
   return (
     <>
-      {/* ✅ FIXED POSITION */}
       <ToastProvider />
 
       <Routes>
@@ -41,51 +42,30 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* USER */}
-        <Route element={<UserLayout />}>
-          <Route path="/" element={<Home />} />
+        {/* ✅ SMART ROOT ROUTE */}
+        <Route path="/" element={<RoleRedirect />} />
+
+        {/* ✅ USER ROUTES */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <UserRoute>
+                <UserLayout />
+              </UserRoute>
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/home" element={<Home />} /> {/* ✅ CHANGED */}
           <Route path="/lost-items" element={<Lost />} />
           <Route path="/found-items" element={<Found />} />
           <Route path="/search" element={<Search />} />
-
-          <Route
-            path="/report-lost"
-            element={
-              <ProtectedRoute>
-                <ReportLost />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/report-found"
-            element={
-              <ProtectedRoute>
-                <ReportFound />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/claim/:type/:id"
-            element={
-              <ProtectedRoute>
-                <Claim />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/report-lost" element={<ReportLost />} />
+          <Route path="/report-found" element={<ReportFound />} />
+          <Route path="/claim/:type/:id" element={<Claim />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
-        {/* ADMIN */}
+        {/* ✅ ADMIN ROUTES */}
         <Route
           path="/admin"
           element={

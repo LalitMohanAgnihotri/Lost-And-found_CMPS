@@ -23,20 +23,17 @@ const Login = () => {
       [e.target.name]: e.target.value,
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const user = await login(form.email, form.password);
 
-      // Redirect based on role
       if (user.role === "ADMIN") {
         navigate("/admin/dashboard", { replace: true });
       } else {
-        navigate(from, { replace: true });
+        navigate("/home", { replace: true }); 
       }
-
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.message || "Login failed");

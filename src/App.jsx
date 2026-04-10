@@ -1,17 +1,21 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
+// ROUTES
 import { Routes, Route } from "react-router-dom";
 import ToastProvider from "./components/common/ToastProvider";
 
+// LAYOUTS & COMPONENTS
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
+// Protected Routes
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import UserRoute from "./components/UserRoute";
-import RoleRedirect from "./components/RoleRedirect"; // ✅ NEW
+import RoleRedirect from "./components/RoleRedirect"; 
 
+// USER PAGES
 import Home from "./pages/user/Home";
 import Lost from "./pages/user/Lost";
 import Found from "./pages/user/Found";
@@ -21,9 +25,13 @@ import Search from "./pages/user/Search";
 import Claim from "./pages/user/Claim";
 import ProfilePage from "./pages/user/Profile";
 
+// AUTH PAGES
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 
+
+// ADMIN PAGES
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Claims from "./pages/admin/Claims";
 import Users from "./pages/admin/Users";
@@ -41,6 +49,7 @@ const App = () => {
         {/* AUTH */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         {/* ✅ SMART ROOT ROUTE */}
         <Route path="/" element={<RoleRedirect />} />

@@ -1,20 +1,18 @@
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-
-  // ✅ FIX FOR YOUR ERROR
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
-
 export const sendMail = async ({ to, subject, html }) => {
   try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false, // ✅ FIX
+      },
+    });
+
     const info = await transporter.sendMail({
       from: `"Lost & Found" <${process.env.EMAIL_USER}>`,
       to,

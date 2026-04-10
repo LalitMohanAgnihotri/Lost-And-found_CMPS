@@ -1,6 +1,14 @@
 import User from "../models/Users.js";
 import jwt from "jsonwebtoken";
 
+
+import bcrypt from "bcryptjs";
+import { sendMail } from "../config/mail.config.js";
+
+// OTP generator
+const generateOtp = () =>
+  Math.floor(100000 + Math.random() * 900000).toString();
+
 // generate token
 const generateToken = (user) => {
   return jwt.sign(
@@ -74,4 +82,75 @@ export const login = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
   
+};
+
+export const sendOtp = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const otp = generateOtp();
+
+    user.resetOtp = otp;
+    user.resetOtpExpiry = Date.now() + 5 * 60 * 1000; // 5 min
+
+    await user.save();
+
+    await sendMail({
+      to: email,
+      subject: "Password Reset OTP",
+      html: `<h3>Your OTP is: ${otp}</h3>`,
+    });
+
+    res.json({ message: "OTP sent" });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user || user.resetOtp !== otp) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    if (user.resetOtpExpiry < Date.now()) {
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    res.json({ message: "OTP verified" });
+  } catch {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.password = password; // ⚠️ will auto-hash via pre-save
+    user.resetOtp = null;
+    user.resetOtpExpiry = null;
+
+    await user.save();
+
+    res.json({ message: "Password reset successful" });
+  } catch {
+    res.status(500).json({ message: "Server error" });
+  }
 };

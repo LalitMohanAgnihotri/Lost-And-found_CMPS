@@ -46,7 +46,7 @@ const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-box">
-        <h2>Welcome Back 👋</h2>
+        <h2>Welcome Back </h2>
         <p className="auth-subtitle">Login to continue</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
@@ -74,6 +74,11 @@ const Login = () => {
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </span>
+          </div>
+
+          {/* ✅ NEW */}
+          <div className="auth-options">
+            <Link to="/forgot-password">Forgot Password?</Link>
           </div>
 
           <button type="submit">Login</button>

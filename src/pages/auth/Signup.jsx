@@ -43,7 +43,7 @@ const Signup = () => {
   return (
     <div className="auth-container">
       <div className="auth-box">
-        <h2>Create Account 🚀</h2>
+        <h2>Create Account </h2>
         <p className="auth-subtitle">Join Lost & Found</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>

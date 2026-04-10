@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
-import "../../styles/Auth.css";
+import "../../styles/auth.css";
 
 const Signup = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -32,9 +35,7 @@ const Signup = () => {
       } else {
         navigate("/home", { replace: true });
       }
-
     } catch (err) {
-      console.error(err);
       alert(err.response?.data?.message || "Signup failed");
     }
   };
@@ -42,32 +43,45 @@ const Signup = () => {
   return (
     <div className="auth-container">
       <div className="auth-box">
-        <h2>Create Account</h2>
+        <h2>Create Account 🚀</h2>
+        <p className="auth-subtitle">Join Lost & Found</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            onChange={handleChange}
-            required
-          />
+          <div className="input-group">
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            required
-          />
+          <div className="input-group">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            required
-          />
+          <div className="input-group password-group">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              onChange={handleChange}
+              required
+            />
+            <span
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </span>
+          </div>
 
           <button type="submit">Sign Up</button>
         </form>

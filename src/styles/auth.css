@@ -1,67 +1,114 @@
 .auth-container {
-  min-height: 80vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f7f7f7;
+
+  background: #f4f7f9;
 }
 
+/* Card */
 .auth-box {
   width: 100%;
-  max-width: 380px;
+  max-width: 420px;
+
+  padding: 35px;
+  border-radius: 16px;
+
   background: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  border-top: 5px solid #2bbbad;
 }
 
+/* Headings */
 .auth-box h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #222;
 }
 
+.auth-subtitle {
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 25px;
+  color: #777;
+}
+
+/* Form */
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
 }
 
-.auth-form input {
-  padding: 10px 12px;
+/* Inputs */
+.input-group input {
+  width: 100%;
+  padding: 12px 14px;
+
+  border-radius: 8px;
+  border: 1px solid #ddd;
+
+  background: #fff;
+  color: #333;
+
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
+  transition: 0.3s;
 }
 
-.auth-form input:focus {
-  border-color: #4caf50;
+.input-group input:focus {
+  border-color: #2bbbad;
+  box-shadow: 0 0 0 2px rgba(43, 187, 173, 0.15);
 }
 
-.auth-form button {
-  padding: 10px;
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  font-size: 15px;
-  border-radius: 5px;
+/* Password toggle */
+.password-group {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   cursor: pointer;
-  transition: background 0.3s ease;
+  color: #666;
+}
+
+/* Button */
+.auth-form button {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+
+  background: #2bbbad;
+  color: #fff;
+
+  font-weight: 600;
+  font-size: 15px;
+
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .auth-form button:hover {
-  background-color: #43a047;
+  background: #239e94;
+  transform: translateY(-1px);
 }
 
+/* Footer */
 .auth-footer {
-  margin-top: 15px;
+  margin-top: 18px;
   text-align: center;
   font-size: 14px;
 }
 
 .auth-footer a {
-  color: #4caf50;
+  color: #2bbbad;
+  font-weight: 600;
   text-decoration: none;
 }
 

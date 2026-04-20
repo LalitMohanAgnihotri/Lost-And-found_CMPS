@@ -8,7 +8,7 @@ const sampleLost = [
     description: "A set of keys on a blue lanyard",
     location: "Parking Lot A",
     dateLost: new Date("2025-09-02T10:00:00Z"),
-    reportedBy: "69870c9096f3a87ba44f5961",
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user1@example.com",
     isResolved: false,
     image: "/images/key.jpg"
@@ -18,7 +18,7 @@ const sampleLost = [
     description: "Dell XPS 13, silver, in a black sleeve",
     location: "Cafeteria",
     dateLost: new Date("2025-09-05T15:00:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d67258d"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user2@example.com",
     isResolved: false,
     image: "/images/laptop.jpg"
@@ -28,7 +28,7 @@ const sampleLost = [
     description: "Black backpack with a University logo",
     location: "Lecture Hall 202",
     dateLost: new Date("2025-09-08T09:30:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672590"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user3@example.com",
     isResolved: true,
     image: "/images/bagB.jpg"
@@ -38,7 +38,7 @@ const sampleLost = [
     description: "Calculus textbook, fifth edition, with a blue cover",
     location: "Library",
     dateLost: new Date("2025-09-09T18:00:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672591"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user4@example.com",
     isResolved: false,
     image: "/images/textb.jpg"
@@ -48,7 +48,7 @@ const sampleLost = [
     description: "Silver iPhone 12 Pro, cracked screen",
     location: "Gym",
     dateLost: new Date("2025-09-04T13:00:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672592"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user5@example.com",
     isResolved: true,
     image: "/images/phoneB.jpg"
@@ -58,7 +58,7 @@ const sampleLost = [
     description: "Black umbrella, automatic open/close",
     location: "Bus Stop",
     dateLost: new Date("2025-09-03T17:30:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672593"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user6@example.com",
     isResolved: false,
     image: "/images/UmbB.jpg"
@@ -68,7 +68,7 @@ const sampleLost = [
     description: "Green Patagonia fleece jacket, size medium",
     location: "Student Union",
     dateLost: new Date("2025-09-07T11:00:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672594"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user7@example.com",
     isResolved: false,
     image: "/images/jaket.jpg"
@@ -78,7 +78,7 @@ const sampleLost = [
     description: "Silver Apple Watch with a white band",
     location: "Locker Room",
     dateLost: new Date("2025-09-09T08:00:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672595"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user8@example.com",
     isResolved: false,
     image: "/images/watch.webp"
@@ -88,7 +88,7 @@ const sampleLost = [
     description: "Black wallet, with a Batman logo",
     location: "Cafeteria",
     dateLost: new Date("2025-09-01T14:30:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672596"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user9@example.com",
     isResolved: false,
     image: "/images/walletB.jpg"
@@ -98,7 +98,7 @@ const sampleLost = [
     description: "White Apple AirPods in their charging case",
     location: "Gym",
     dateLost: new Date("2025-09-10T15:20:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d67259a"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user10@example.com",
     isResolved: false,
     image: "/images/airp.webp"
@@ -108,7 +108,7 @@ const sampleLost = [
     description: "Spiral-bound notebook, college-ruled paper",
     location: "Cafeteria",
     dateLost: new Date("2025-09-10T12:00:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d67259b"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user11@example.com",
     isResolved: false,
     image: "/images/noteb.jpg"
@@ -118,7 +118,7 @@ const sampleLost = [
     description: "Clear plastic pencil case with a red zipper",
     location: "Art Studio",
     dateLost: new Date("2025-09-09T10:00:00Z"),
-    reportedBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d67259c"),
+    reportedBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     contactEmail: "user12@example.com",
     isResolved: true,
     image: "/images/pancil.jpg"

@@ -8,7 +8,7 @@ const sampleFound = [
     description: "Brown leather wallet with student ID inside",
     location: "Cafeteria",
     dateFound: new Date("2025-09-01T12:30:00Z"),
-    foundBy: "69870c9096f3a87ba44f5961",
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: true,
     image: "/images/walletB.jpg"
   },
@@ -17,7 +17,7 @@ const sampleFound = [
     description: "White wireless headphones",
     location: "Lecture Hall 101",
     dateFound: new Date("2025-09-07T09:15:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d67258c"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: false,
     image: "/images/headp.jpg"
   },
@@ -26,7 +26,7 @@ const sampleFound = [
     description: "Stainless steel water bottle with stickers",
     location: "Gym",
     dateFound: new Date("2025-09-04T11:00:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d67258e"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: true,
     image: "/images/bottel.jpg"
   },
@@ -35,7 +35,7 @@ const sampleFound = [
     description: "Black Ray-Ban sunglasses",
     location: "Campus Quad",
     dateFound: new Date("2025-09-06T13:30:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d67258f"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: false,
     image: "/images/sung.webp"
   },
@@ -44,7 +44,7 @@ const sampleFound = [
     description: "Student ID card for John Doe",
     location: "Dorm Hallway",
     dateFound: new Date("2025-09-08T08:00:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672592"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: true,
     image: "/images/idc.jpg"
   },
@@ -53,7 +53,7 @@ const sampleFound = [
     description: "Silver ring with a small blue stone",
     location: "Restroom near the gym",
     dateFound: new Date("2025-08-29T19:00:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672593"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: false,
     image: "/images/ring.webp"
   },
@@ -62,7 +62,7 @@ const sampleFound = [
     description: "Pair of black knitted gloves",
     location: "Bus Stop",
     dateFound: new Date("2025-09-03T07:30:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672594"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: false,
     image: "/images/gloves.jpg"
   },
@@ -71,7 +71,7 @@ const sampleFound = [
     description: "Canon DSLR camera with a standard lens",
     location: "Photography Studio",
     dateFound: new Date("2025-09-06T10:00:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672595"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: false,
     image: "/images/cammra.jpg"
   },
@@ -80,7 +80,7 @@ const sampleFound = [
     description: "A small red diary with a lock",
     location: "Park bench",
     dateFound: new Date("2025-09-08T14:00:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672596"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: false,
     image: "/images/dairy.jpg"
   },
@@ -89,7 +89,7 @@ const sampleFound = [
     description: "Blue backpack with a laptop inside",
     location: "Library Reading Room",
     dateFound: new Date("2025-09-09T16:45:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672597"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: false,
     image: "/images/bagB.jpg"
   },
@@ -98,7 +98,7 @@ const sampleFound = [
     description: "Black iPhone 13 in a clear case",
     location: "Computer Lab",
     dateFound: new Date("2025-09-10T10:00:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672598"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: false,
     image: "/images/phoneB.jpg"
   },
@@ -107,7 +107,7 @@ const sampleFound = [
     description: "Red umbrella with a floral pattern",
     location: "Main Entrance",
     dateFound: new Date("2025-09-10T11:15:00Z"),
-    foundBy: new mongoose.Types.ObjectId("65d648f86f8a427f8d672599"),
+    foundBy: new mongoose.Types.ObjectId("69e637ef53e01ce1f9cc1244"),
     isResolved: true,
     image: "/images/UmbB.jpg"
   }

@@ -1,22 +1,20 @@
 import { useState } from "react";
+import api from "../api/axios";
 import "../styles/report.css";
 
 function ReportItem({ type }) {
-
   const [form, setForm] = useState({
     item: "",
     description: "",
     location: "",
     contactEmail: "",
-    image: null
+    image: null,
   });
 
   const [preview, setPreview] = useState(null);
 
   const handleChange = (e) => {
-
     if (e.target.name === "image") {
-
       const file = e.target.files[0];
 
       setForm({ ...form, image: file });
@@ -24,18 +22,12 @@ function ReportItem({ type }) {
       if (file) {
         setPreview(URL.createObjectURL(file));
       }
-
     } else {
-
       setForm({ ...form, [e.target.name]: e.target.value });
-
     }
-
   };
 
-
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     const data = new FormData();
@@ -43,73 +35,52 @@ function ReportItem({ type }) {
     data.append("item", form.item);
     data.append("description", form.description);
     data.append("location", form.location);
-    data.append("image", form.image);
+
+    if (form.image) {
+      data.append("image", form.image);
+    }
 
     if (type === "lost") {
       data.append("contactEmail", form.contactEmail);
     }
 
-    const endpoint =
-      type === "lost"
-        ? "http://localhost:3000/api/lost/report"
-        : "http://localhost:3000/api/found/report";
-
-
-    const token = localStorage.getItem("token");
+    const endpoint = type === "lost" ? "/lost/report" : "/found/report";
 
     try {
-
-      const res = await fetch(endpoint, {
-        method: "POST",
+      const res = await api.post(endpoint, data, {
         headers: {
-          Authorization: `Bearer ${token}`
+          "Content-Type": "multipart/form-data",
         },
-        body: data
       });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        alert(result.message || "Failed to report item");
-        return;
-      }
 
       alert(`${type} item reported successfully`);
 
-      console.log(result);
+      console.log(res.data);
 
       setForm({
         item: "",
         description: "",
         location: "",
         contactEmail: "",
-        image: null
+        image: null,
       });
 
       setPreview(null);
-
     } catch (err) {
-
       console.error(err);
-      alert("Server error");
 
+      alert(err.response?.data?.message || "Failed to report item");
     }
-
   };
 
-
   return (
-
     <div className="report-page">
-
       <div className="report-container">
-
         <h2 className="report-title">
           {type === "lost" ? "Report Lost Item" : "Report Found Item"}
         </h2>
 
         <form className="report-form" onSubmit={handleSubmit}>
-
           <input
             type="text"
             name="item"
@@ -154,23 +125,13 @@ function ReportItem({ type }) {
           />
 
           {preview && (
-            <img
-              src={preview}
-              alt="preview"
-              className="image-preview"
-            />
+            <img src={preview} alt="preview" className="image-preview" />
           )}
 
-          <button className="report-btn">
-            Submit
-          </button>
-
+          <button className="report-btn">Submit</button>
         </form>
-
       </div>
-
     </div>
-
   );
 }
 

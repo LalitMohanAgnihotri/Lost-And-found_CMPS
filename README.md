@@ -172,8 +172,7 @@ Server/
 ├── app.js
 └── server.js
 
-Client/
-├── src/
+src/
 │   ├── api/
 │   │   ├── axios.js
 │   │   ├── notification.js

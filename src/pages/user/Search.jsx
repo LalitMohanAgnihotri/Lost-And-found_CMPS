@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
+import api from "../../api/axios";
+
 import LostCard from "../../components/LostCard";
 import FoundCard from "../../components/FoundCard";
 
@@ -26,19 +28,13 @@ const Search = () => {
       setLoading(true);
 
       try {
-        const lostRes = await fetch(
-          `http://localhost:3000/api/lost?search=${query}`
-        );
+        const [lostRes, foundRes] = await Promise.all([
+          api.get(`/lost?search=${query}`),
+          api.get(`/found?search=${query}`),
+        ]);
 
-        const foundRes = await fetch(
-          `http://localhost:3000/api/found?search=${query}`
-        );
-
-        const lostData = await lostRes.json();
-        const foundData = await foundRes.json();
-
-        setLostItems(lostData.data || lostData);
-        setFoundItems(foundData.data || foundData);
+        setLostItems(lostRes.data.data || lostRes.data);
+        setFoundItems(foundRes.data.data || foundRes.data);
       } catch (err) {
         console.error(err);
       }

@@ -6,7 +6,7 @@ import api from "../../api/axios";
 import LostCard from "../../components/LostCard";
 import FoundCard from "../../components/FoundCard";
 
-import "../../styles/Lost.css";
+import "../../styles/lost.css";
 
 const Search = () => {
   const location = useLocation();

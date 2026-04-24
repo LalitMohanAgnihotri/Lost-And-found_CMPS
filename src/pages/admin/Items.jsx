@@ -76,7 +76,7 @@ const Items = () => {
       <div className="row g-2 mb-4">
 
         <div className="col-md-3">
-          <input
+          <input3
             type="text"
             name="search"
             placeholder="Search item..."

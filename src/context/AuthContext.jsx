@@ -23,13 +23,13 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  // 🔐 LOGIN
+  // LOGIN
   const login = async (email, password) => {
     const res = await api.post("/auth/login", { email, password });
 
     const { token, user } = res.data;
 
-    // ✅ Save auth
+    // Save auth
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
 
@@ -38,13 +38,13 @@ export const AuthProvider = ({ children }) => {
     return user;
   };
 
-  // 🆕 SIGNUP (NEW)
+  // SIGNUP (NEW)
   const signup = async (formData) => {
     const res = await api.post("/auth/signup", formData);
 
     const { token, user } = res.data;
 
-    // ✅ Save auth
+    // Save auth
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
 
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     return user;
   };
 
-  // 🚪 LOGOUT
+  // LOGOUT
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
       value={{
         user,
         login,
-        signup, // ✅ EXPOSE
+        signup, // EXPOSE
         logout,
         loading,
       }}

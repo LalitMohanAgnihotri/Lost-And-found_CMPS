@@ -3,7 +3,9 @@ import Found from "../models/Found.js";
 import Notification from "../models/Notification.js";
 import User from "../models/Users.js";
 import { handleClaimDecision } from "../services/claim.service.js";
+import { io } from "../server.js";
 
+// GET ALL CLAIMS
 export const getAllClaims = async (req, res) => {
   try {
     const claims = await Claim.find()
@@ -13,6 +15,7 @@ export const getAllClaims = async (req, res) => {
     const updated = await Promise.all(
       claims.map(async (c) => {
         const item = await Found.findById(c.itemId);
+
         return {
           ...c.toObject(),
           item,
@@ -43,53 +46,90 @@ export const createClaim = async (req, res) => {
       });
     }
 
-    const claim = new Claim({
+    const claim = await Claim.create({
       user: req.user.id,
       itemId,
       proofMessage,
     });
 
-    await claim.save();
-
-    // 🔔 ADMIN NOTIFICATION
+    // Notify all admins
     const admins = await User.find({ role: "ADMIN" });
 
     for (const admin of admins) {
-      await Notification.create({
+      const notif = await Notification.create({
         user: admin._id,
         title: "New Claim Request",
         message: "A user requested to claim an item",
         type: "claim",
       });
+
+      io.to(admin._id.toString()).emit("new_notification", notif);
     }
 
-    res.json({ message: "Claim submitted", claim });
+    res.json({
+      message: "Claim submitted",
+      claim,
+    });
 
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// APPROVE
+// APPROVE CLAIM
 export const approveClaim = async (req, res) => {
-  const claim = await Claim.findById(req.params.id);
-  if (!claim) return res.status(404).json({ message: "Not found" });
+  try {
+    const claim = await Claim.findById(req.params.id);
 
-  await handleClaimDecision(claim._id, "approved");
+    if (!claim) {
+      return res.status(404).json({ message: "Not found" });
+    }
 
-  await Found.findByIdAndUpdate(claim.itemId, {
-    isResolved: true,
-  });
+    await handleClaimDecision(claim._id, "approved");
 
-  res.json({ message: "Approved" });
+    await Found.findByIdAndUpdate(claim.itemId, {
+      isResolved: true,
+    });
+
+    const notif = await Notification.findOne({
+      user: claim.user,
+      type: "claim",
+    }).sort({ createdAt: -1 });
+
+    if (notif) {
+      io.to(claim.user.toString()).emit("new_notification", notif);
+    }
+
+    res.json({ message: "Approved" });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
-// REJECT
+// REJECT CLAIM
 export const rejectClaim = async (req, res) => {
-  const claim = await Claim.findById(req.params.id);
-  if (!claim) return res.status(404).json({ message: "Not found" });
+  try {
+    const claim = await Claim.findById(req.params.id);
 
-  await handleClaimDecision(claim._id, "rejected");
+    if (!claim) {
+      return res.status(404).json({ message: "Not found" });
+    }
 
-  res.json({ message: "Rejected" });
+    await handleClaimDecision(claim._id, "rejected");
+
+    const notif = await Notification.findOne({
+      user: claim.user,
+      type: "claim",
+    }).sort({ createdAt: -1 });
+
+    if (notif) {
+      io.to(claim.user.toString()).emit("new_notification", notif);
+    }
+
+    res.json({ message: "Rejected" });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };

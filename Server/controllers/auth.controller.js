@@ -1,5 +1,6 @@
 import User from "../models/Users.js";
 import jwt from "jsonwebtoken";
+import redis from "../config/redis.js";
 
 
 import bcrypt from "bcryptjs";
@@ -96,10 +97,7 @@ export const sendOtp = async (req, res) => {
 
     const otp = generateOtp();
 
-    user.resetOtp = otp;
-    user.resetOtpExpiry = Date.now() + 5 * 60 * 1000; // 5 min
-
-    await user.save();
+    await redis.set(`otp:${email}`, otp, "EX", 300);
 
     await sendMail({
       to: email,
@@ -117,14 +115,10 @@ export const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const savedOtp = await redis.get(`otp:${email}`);
 
-    if (!user || user.resetOtp !== otp) {
+    if (!savedOtp || savedOtp !== otp) {
       return res.status(400).json({ message: "Invalid OTP" });
-    }
-
-    if (user.resetOtpExpiry < Date.now()) {
-      return res.status(400).json({ message: "OTP expired" });
     }
 
     res.json({ message: "OTP verified" });
@@ -143,11 +137,10 @@ export const resetPassword = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.password = password; // ⚠️ will auto-hash via pre-save
-    user.resetOtp = null;
-    user.resetOtpExpiry = null;
-
+    user.password = password;
     await user.save();
+
+    await redis.del(`otp:${email}`);
 
     res.json({ message: "Password reset successful" });
   } catch {

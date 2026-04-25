@@ -21,6 +21,9 @@ const Claims = () => {
     date: "",
   });
 
+  const [debouncedSearch, setDebouncedSearch] =
+    useState("");
+
   const fetchClaims = async () => {
     try {
       const res = await api.get("/claim");
@@ -55,6 +58,17 @@ const Claims = () => {
     };
   }, [socket]);
 
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(
+        filters.search.toLowerCase().trim()
+      );
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [filters.search]);
+
   const handleApprove = async (id) => {
     try {
       await api.put(`/claim/${id}/approve`);
@@ -84,10 +98,10 @@ const Claims = () => {
     const searchMatch =
       c.item?.item
         ?.toLowerCase()
-        .includes(filters.search.toLowerCase()) ||
+        .includes(debouncedSearch) ||
       c.user?.name
         ?.toLowerCase()
-        .includes(filters.search.toLowerCase());
+        .includes(debouncedSearch);
 
     const statusMatch = filters.status
       ? c.status === filters.status

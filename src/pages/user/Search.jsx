@@ -1,4 +1,3 @@
-// Search.jsx
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -13,14 +12,36 @@ import "../../styles/lost.css";
 const Search = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const query = params.get("q");
+  const query = params.get("q") || "";
+
+  const [searchTerm, setSearchTerm] =
+    useState(query);
+
+  const [debouncedSearch, setDebouncedSearch] =
+    useState(query);
 
   const [lostItems, setLostItems] = useState([]);
   const [foundItems, setFoundItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Sync URL query to state
   useEffect(() => {
-    if (!query || query.trim() === "") {
+    setSearchTerm(query);
+  }, [query]);
+
+  // Debounce query
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(
+        searchTerm.trim()
+      );
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (!debouncedSearch) {
       setLostItems([]);
       setFoundItems([]);
       return;
@@ -30,13 +51,29 @@ const Search = () => {
       setLoading(true);
 
       try {
-        const [lostRes, foundRes] = await Promise.all([
-          api.get(`/lost?search=${query}`),
-          api.get(`/found?search=${query}`),
-        ]);
+        const [lostRes, foundRes] =
+          await Promise.all([
+            api.get(
+              `/lost?search=${encodeURIComponent(
+                debouncedSearch
+              )}`
+            ),
+            api.get(
+              `/found?search=${encodeURIComponent(
+                debouncedSearch
+              )}`
+            ),
+          ]);
 
-        setLostItems(lostRes.data.data || lostRes.data);
-        setFoundItems(foundRes.data.data || foundRes.data);
+        setLostItems(
+          lostRes.data.data ||
+            lostRes.data
+        );
+
+        setFoundItems(
+          foundRes.data.data ||
+            foundRes.data
+        );
 
       } catch (err) {
         console.error(err);
@@ -46,12 +83,15 @@ const Search = () => {
     };
 
     fetchData();
-  }, [query]);
+  }, [debouncedSearch]);
 
-  if (!query || query.trim() === "") {
+  if (!query.trim()) {
     return (
       <div className="lost-container">
-        <h2 className="page-title">Search</h2>
+        <h2 className="page-title">
+          Search
+        </h2>
+
         <p className="text-center">
           Type something in the search bar
         </p>
@@ -67,7 +107,9 @@ const Search = () => {
 
       {loading ? (
         <div className="card-grid">
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({
+            length: 6,
+          }).map((_, i) => (
             <CardSkeleton key={i} />
           ))}
         </div>
@@ -85,12 +127,17 @@ const Search = () => {
               <h3>Lost Items</h3>
 
               <div className="card-grid">
-                {lostItems.map((item) => (
-                  <LostCard
-                    key={item._id || item.id}
-                    item={item}
-                  />
-                ))}
+                {lostItems.map(
+                  (item) => (
+                    <LostCard
+                      key={
+                        item._id ||
+                        item.id
+                      }
+                      item={item}
+                    />
+                  )
+                )}
               </div>
             </>
           )}
@@ -102,12 +149,17 @@ const Search = () => {
               </h3>
 
               <div className="card-grid">
-                {foundItems.map((item) => (
-                  <FoundCard
-                    key={item._id || item.id}
-                    item={item}
-                  />
-                ))}
+                {foundItems.map(
+                  (item) => (
+                    <FoundCard
+                      key={
+                        item._id ||
+                        item.id
+                      }
+                      item={item}
+                    />
+                  )
+                )}
               </div>
             </>
           )}

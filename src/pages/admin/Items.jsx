@@ -24,6 +24,11 @@ const Items = () => {
     date: "",
   });
 
+  const [debouncedSearch, setDebouncedSearch] =
+    useState("");
+  const [debouncedLocation, setDebouncedLocation] =
+    useState("");
+
   const fetchItems = async () => {
     try {
       const [lostRes, foundRes] = await Promise.all([
@@ -56,6 +61,28 @@ const Items = () => {
     };
   }, [socket]);
 
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(
+        filters.search.toLowerCase().trim()
+      );
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [filters.search]);
+
+  // Debounce location
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedLocation(
+        filters.location.toLowerCase().trim()
+      );
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [filters.location]);
+
   const handleChange = (e) => {
     setFilters({
       ...filters,
@@ -67,11 +94,11 @@ const Items = () => {
     return items.filter((item) => {
       const nameMatch = item.item
         ?.toLowerCase()
-        .includes(filters.search.toLowerCase());
+        .includes(debouncedSearch);
 
       const locationMatch = item.location
         ?.toLowerCase()
-        .includes(filters.location.toLowerCase());
+        .includes(debouncedLocation);
 
       const statusMatch = filters.status
         ? filters.status === "resolved"

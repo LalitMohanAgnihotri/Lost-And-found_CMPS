@@ -14,6 +14,9 @@ const Users = () => {
 
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] =
+    useState("");
+
   const [loading, setLoading] = useState(true);
 
   const fetchUsers = async () => {
@@ -50,13 +53,24 @@ const Users = () => {
     };
   }, [socket]);
 
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(
+        search.toLowerCase().trim()
+      );
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
   const filteredUsers = users.filter((u) =>
     u.name
       .toLowerCase()
-      .includes(search.toLowerCase()) ||
+      .includes(debouncedSearch) ||
     u.email
       .toLowerCase()
-      .includes(search.toLowerCase())
+      .includes(debouncedSearch)
   );
 
   if (loading) {

@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import AdminClaimCard from "../../components/admin/AdminClaimCard";
+import { useAuth } from "../../context/AuthContext";
+import useSocket from "../../hooks/useSocket";
 
 const Claims = () => {
+  const { user } = useAuth();
+  const socket = useSocket(user?.id);
+
   const [claims, setClaims] = useState([]);
 
   const [filters, setFilters] = useState({
@@ -11,27 +16,44 @@ const Claims = () => {
     date: "",
   });
 
+  const fetchClaims = async () => {
+    try {
+      const res = await api.get("/claim");
+      setClaims(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchClaims();
   }, []);
 
-  const fetchClaims = async () => {
-    const res = await api.get("/claim", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    setClaims(res.data);
-  };
+  // 🔥 Real-time updates
+  useEffect(() => {
+    if (!socket) return;
+
+    const refreshClaims = () => {
+      fetchClaims();
+    };
+
+    socket.on("claim_created", refreshClaims);
+    socket.on("claim_updated", refreshClaims);
+    socket.on("new_notification", refreshClaims);
+
+    return () => {
+      socket.off("claim_created", refreshClaims);
+      socket.off("claim_updated", refreshClaims);
+      socket.off("new_notification", refreshClaims);
+    };
+  }, [socket]);
 
   const handleApprove = async (id) => {
     await api.put(`/claim/${id}/approve`);
-    fetchClaims();
   };
 
   const handleReject = async (id) => {
     await api.put(`/claim/${id}/reject`);
-    fetchClaims();
   };
 
   const handleChange = (e) => {
@@ -41,7 +63,6 @@ const Claims = () => {
     });
   };
 
-  // 🔥 FILTER LOGIC
   const filteredClaims = claims.filter((c) => {
     const searchMatch =
       c.item?.item?.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -61,12 +82,9 @@ const Claims = () => {
 
   return (
     <div className="container mt-4">
-
       <h3 className="fw-bold mb-4">Claim Requests</h3>
 
-      {/* 🔥 FILTER BAR (SAME AS ITEMS PAGE) */}
       <div className="row g-2 mb-4">
-
         <div className="col-md-4">
           <input
             type="text"
@@ -101,10 +119,8 @@ const Claims = () => {
             onChange={handleChange}
           />
         </div>
-
       </div>
 
-      {/* 🔥 CLAIM GRID */}
       <div className="claims-grid">
         {filteredClaims.length > 0 ? (
           filteredClaims.map((c) => (
@@ -119,7 +135,6 @@ const Claims = () => {
           <p className="text-muted">No claims found</p>
         )}
       </div>
-
     </div>
   );
 };

@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import LostCard from "../../components/LostCard";
 import FoundCard from "../../components/FoundCard";
+import { useAuth } from "../../context/AuthContext";
+import useSocket from "../../hooks/useSocket";
 
 const Items = () => {
+  const { user } = useAuth();
+  const socket = useSocket(user?.id);
+
   const [lost, setLost] = useState([]);
   const [found, setFound] = useState([]);
   const [activeTab, setActiveTab] = useState("lost");
@@ -15,10 +20,6 @@ const Items = () => {
     date: "",
   });
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
   const fetchItems = async () => {
     try {
       const [lostRes, foundRes] = await Promise.all([
@@ -28,11 +29,27 @@ const Items = () => {
 
       setLost(lostRes.data);
       setFound(foundRes.data);
-
     } catch (err) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  // 🔥 Live updates
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("item_created", fetchItems);
+    socket.on("item_updated", fetchItems);
+
+    return () => {
+      socket.off("item_created", fetchItems);
+      socket.off("item_updated", fetchItems);
+    };
+  }, [socket]);
 
   const handleChange = (e) => {
     setFilters({
@@ -44,7 +61,7 @@ const Items = () => {
   const filterItems = (items) => {
     return items.filter((item) => {
       const nameMatch = item.item
-        .toLowerCase()
+        ?.toLowerCase()
         .includes(filters.search.toLowerCase());
 
       const locationMatch = item.location
@@ -68,15 +85,13 @@ const Items = () => {
 
   return (
     <div className="container mt-4">
-
       <div className="mb-4">
         <h3 className="fw-bold">Manage Items</h3>
       </div>
 
       <div className="row g-2 mb-4">
-
         <div className="col-md-3">
-          <input3
+          <input
             type="text"
             name="search"
             placeholder="Search item..."
@@ -119,7 +134,6 @@ const Items = () => {
             onChange={handleChange}
           />
         </div>
-
       </div>
 
       <div className="mb-4 d-flex gap-3">
@@ -143,10 +157,9 @@ const Items = () => {
       </div>
 
       <div className="row g-3">
-
         {activeTab === "lost" &&
           (filterItems(lost).length > 0 ? (
-            filterItems(lost).map(item => (
+            filterItems(lost).map((item) => (
               <div key={item._id} className="col-md-4">
                 <LostCard item={{ ...item, title: item.item }} />
               </div>
@@ -157,7 +170,7 @@ const Items = () => {
 
         {activeTab === "found" &&
           (filterItems(found).length > 0 ? (
-            filterItems(found).map(item => (
+            filterItems(found).map((item) => (
               <div key={item._id} className="col-md-4">
                 <FoundCard
                   item={{ ...item, title: item.item }}
@@ -168,7 +181,6 @@ const Items = () => {
           ) : (
             <p className="text-muted">No found items found</p>
           ))}
-
       </div>
     </div>
   );

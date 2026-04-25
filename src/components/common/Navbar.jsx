@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Bell } from "lucide-react";
+import useSocket from "../../hooks/useSocket";
 
 import { useAuth } from "../../context/AuthContext";
 import Profile from "../common/ProfileDropdown.";
@@ -24,24 +25,39 @@ const Navbar = ({
 
   const navigate = useNavigate();
   const { user } = useAuth();
+  const socket = useSocket(user?.id);
 
   const isAdmin = type === "admin";
 
-  // 🔔 REAL-TIME CHECK
+  // Initial fetch
   useEffect(() => {
     const fetchNotif = async () => {
-      const data = await getNotifications();
-      const unread = data.filter((n) => !n.read);
-      setHasNotif(unread.length > 0);
+      try {
+        const data = await getNotifications();
+        const unread = data.filter((n) => !n.read);
+        setHasNotif(unread.length > 0);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     fetchNotif();
-
-    const interval = setInterval(fetchNotif, 5000);
-    return () => clearInterval(interval);
   }, []);
 
-  // 🔥 MARK READ
+  // Real-time listener
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("new_notification", () => {
+      setHasNotif(true);
+    });
+
+    return () => {
+      socket.off("new_notification");
+    };
+  }, [socket]);
+
+  // Mark read
   useEffect(() => {
     if (showNotif) {
       markAllRead();
@@ -66,10 +82,8 @@ const Navbar = ({
           ☰
         </button>
 
-        {/* ✅ BRAND RESTORED */}
         <Link to={isAdmin ? "/admin/dashboard" : "/"} className="brand">
           <img src="/images/logo.png" className="brand-icon" />
-
           <h4 className="brand-text">
             <span className="brand-lost">Lost</span>
             <span className="brand-and"> & </span>

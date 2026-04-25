@@ -1,36 +1,60 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import { useAuth } from "../../context/AuthContext";
+import useSocket from "../../hooks/useSocket";
 
 const Users = () => {
+  const { user } = useAuth();
+  const socket = useSocket(user?.id);
+
   const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState(""); 
+  const [search, setSearch] = useState("");
+
   const navigate = useNavigate();
+
+  const fetchUsers = async () => {
+    try {
+      const res = await api.get("/admin/users");
+
+      const filtered = res.data.filter(
+        (u) => u.role !== "ADMIN"
+      );
+
+      setUsers(filtered);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const fetchUsers = async () => {
-    const res = await api.get("/admin/users");
+  // 🔥 Live new signup updates
+  useEffect(() => {
+    if (!socket) return;
 
-    //remove admin from list
-    const filtered = res.data.filter(user => user.role !== "ADMIN");
+    const refreshUsers = () => {
+      fetchUsers();
+    };
 
-    setUsers(filtered);
-  };
+    socket.on("user_created", refreshUsers);
 
-  // search filter
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(search.toLowerCase()) ||
-    user.email.toLowerCase().includes(search.toLowerCase())
+    return () => {
+      socket.off("user_created", refreshUsers);
+    };
+  }, [socket]);
+
+  const filteredUsers = users.filter((u) =>
+    u.name.toLowerCase().includes(search.toLowerCase()) ||
+    u.email.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <div className="container mt-4">
       <h3>All Users</h3>
 
-      {/* 🔍 SEARCH */}
       <input
         type="text"
         className="form-control mt-3"
@@ -50,14 +74,16 @@ const Users = () => {
 
         <tbody>
           {filteredUsers.length > 0 ? (
-            filteredUsers.map(user => (
-              <tr key={user._id}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
+            filteredUsers.map((u) => (
+              <tr key={u._id}>
+                <td>{u.name}</td>
+                <td>{u.email}</td>
                 <td>
                   <button
                     className="btn btn-dark btn-sm"
-                    onClick={() => navigate(`/admin/users/${user._id}`)}
+                    onClick={() =>
+                      navigate(`/admin/users/${u._id}`)
+                    }
                   >
                     View Profile
                   </button>
@@ -66,7 +92,10 @@ const Users = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="3" className="text-center text-muted">
+              <td
+                colSpan="3"
+                className="text-center text-muted"
+              >
                 No users found
               </td>
             </tr>

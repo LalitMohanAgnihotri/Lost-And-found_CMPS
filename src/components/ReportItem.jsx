@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import api from "../api/axios";
 import "../styles/report.css";
 
@@ -12,6 +13,7 @@ function ReportItem({ type }) {
   });
 
   const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
@@ -23,12 +25,17 @@ function ReportItem({ type }) {
         setPreview(URL.createObjectURL(file));
       }
     } else {
-      setForm({ ...form, [e.target.name]: e.target.value });
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (loading) return;
 
     const data = new FormData();
 
@@ -44,16 +51,23 @@ function ReportItem({ type }) {
       data.append("contactEmail", form.contactEmail);
     }
 
-    const endpoint = type === "lost" ? "/lost/report" : "/found/report";
+    const endpoint =
+      type === "lost"
+        ? "/lost/report"
+        : "/found/report";
 
     try {
+      setLoading(true);
+
       const res = await api.post(endpoint, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      alert(`${type} item reported successfully`);
+      toast.success(
+        `${type === "lost" ? "Lost" : "Found"} item reported successfully`
+      );
 
       console.log(res.data);
 
@@ -66,10 +80,16 @@ function ReportItem({ type }) {
       });
 
       setPreview(null);
+
     } catch (err) {
       console.error(err);
 
-      alert(err.response?.data?.message || "Failed to report item");
+      toast.error(
+        err.response?.data?.message ||
+          "Failed to report item"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,10 +97,15 @@ function ReportItem({ type }) {
     <div className="report-page">
       <div className="report-container">
         <h2 className="report-title">
-          {type === "lost" ? "Report Lost Item" : "Report Found Item"}
+          {type === "lost"
+            ? "Report Lost Item"
+            : "Report Found Item"}
         </h2>
 
-        <form className="report-form" onSubmit={handleSubmit}>
+        <form
+          className="report-form"
+          onSubmit={handleSubmit}
+        >
           <input
             type="text"
             name="item"
@@ -88,6 +113,7 @@ function ReportItem({ type }) {
             value={form.item}
             onChange={handleChange}
             required
+            disabled={loading}
           />
 
           <textarea
@@ -95,6 +121,7 @@ function ReportItem({ type }) {
             placeholder="Description"
             value={form.description}
             onChange={handleChange}
+            disabled={loading}
           />
 
           <input
@@ -104,6 +131,7 @@ function ReportItem({ type }) {
             value={form.location}
             onChange={handleChange}
             required
+            disabled={loading}
           />
 
           {type === "lost" && (
@@ -114,6 +142,7 @@ function ReportItem({ type }) {
               value={form.contactEmail}
               onChange={handleChange}
               required
+              disabled={loading}
             />
           )}
 
@@ -122,13 +151,23 @@ function ReportItem({ type }) {
             name="image"
             accept="image/*"
             onChange={handleChange}
+            disabled={loading}
           />
 
           {preview && (
-            <img src={preview} alt="preview" className="image-preview" />
+            <img
+              src={preview}
+              alt="preview"
+              className="image-preview"
+            />
           )}
 
-          <button className="report-btn">Submit</button>
+          <button
+            className="report-btn"
+            disabled={loading}
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </button>
         </form>
       </div>
     </div>

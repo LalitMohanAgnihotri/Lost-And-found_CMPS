@@ -12,6 +12,7 @@ import ClaimsPieChart from "../../components/admin/ClaimsPieChart";
 
 import LostCard from "../../components/LostCard";
 import FoundCard from "../../components/FoundCard";
+import AdminPageSkeleton from "../../components/common/AdminPageSkeleton";
 
 import "../../styles/admindashboard.css";
 
@@ -24,6 +25,8 @@ const AdminDashboard = () => {
     found: [],
     claims: [],
   });
+
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
@@ -40,6 +43,8 @@ const AdminDashboard = () => {
       });
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,7 +52,6 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
-  // 🔥 Real-time updates
   useEffect(() => {
     if (!socket) return;
 
@@ -71,14 +75,26 @@ const AdminDashboard = () => {
   }, [socket]);
 
   const handleApprove = async (id) => {
-    await api.put(`/claim/${id}/approve`);
-    toast.success("Approved ✅");
+    try {
+      await api.put(`/claim/${id}/approve`);
+      toast.success("Approved ✅");
+    } catch (err) {
+      toast.error("Failed to approve");
+    }
   };
 
   const handleReject = async (id) => {
-    await api.put(`/claim/${id}/reject`);
-    toast.error("Rejected ❌");
+    try {
+      await api.put(`/claim/${id}/reject`);
+      toast.error("Rejected ❌");
+    } catch (err) {
+      toast.error("Failed to reject");
+    }
   };
+
+  if (loading) {
+    return <AdminPageSkeleton cards={6} />;
+  }
 
   return (
     <div className="admin-dashboard">
@@ -113,7 +129,11 @@ const AdminDashboard = () => {
       <h4 className="section-title">Recent Lost</h4>
       <div className="grid-layout">
         {data.lost.slice(0, 3).map((item) => (
-          <LostCard key={item._id} item={item} isAdmin />
+          <LostCard
+            key={item._id}
+            item={item}
+            isAdmin
+          />
         ))}
       </div>
 

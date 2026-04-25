@@ -1,3 +1,4 @@
+// Search.jsx
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -5,6 +6,7 @@ import api from "../../api/axios";
 
 import LostCard from "../../components/LostCard";
 import FoundCard from "../../components/FoundCard";
+import CardSkeleton from "../../components/common/CardSkeleton";
 
 import "../../styles/lost.css";
 
@@ -35,11 +37,12 @@ const Search = () => {
 
         setLostItems(lostRes.data.data || lostRes.data);
         setFoundItems(foundRes.data.data || foundRes.data);
+
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
     fetchData();
@@ -49,42 +52,65 @@ const Search = () => {
     return (
       <div className="lost-container">
         <h2 className="page-title">Search</h2>
-        <p className="text-center">Type something in the search bar</p>
+        <p className="text-center">
+          Type something in the search bar
+        </p>
       </div>
     );
   }
 
-  if (loading) return <p className="text-center">Searching...</p>;
-
   return (
     <div className="lost-container">
-      <h2 className="page-title">Search Results for "{query}"</h2>
+      <h2 className="page-title">
+        Search Results for "{query}"
+      </h2>
 
-      {lostItems.length === 0 && foundItems.length === 0 && (
-        <p className="text-center">No items found</p>
-      )}
-
-      {lostItems.length > 0 && (
+      {loading ? (
+        <div className="card-grid">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <CardSkeleton key={i} />
+          ))}
+        </div>
+      ) : (
         <>
-          <h3>Lost Items</h3>
+          {lostItems.length === 0 &&
+            foundItems.length === 0 && (
+              <p className="text-center">
+                No items found
+              </p>
+            )}
 
-          <div className="card-grid">
-            {lostItems.map((item) => (
-              <LostCard key={item._id || item.id} item={item} />
-            ))}
-          </div>
-        </>
-      )}
+          {lostItems.length > 0 && (
+            <>
+              <h3>Lost Items</h3>
 
-      {foundItems.length > 0 && (
-        <>
-          <h3 className="mt-4">Found Items</h3>
+              <div className="card-grid">
+                {lostItems.map((item) => (
+                  <LostCard
+                    key={item._id || item.id}
+                    item={item}
+                  />
+                ))}
+              </div>
+            </>
+          )}
 
-          <div className="card-grid">
-            {foundItems.map((item) => (
-              <FoundCard key={item._id || item.id} item={item} />
-            ))}
-          </div>
+          {foundItems.length > 0 && (
+            <>
+              <h3 className="mt-4">
+                Found Items
+              </h3>
+
+              <div className="card-grid">
+                {foundItems.map((item) => (
+                  <FoundCard
+                    key={item._id || item.id}
+                    item={item}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

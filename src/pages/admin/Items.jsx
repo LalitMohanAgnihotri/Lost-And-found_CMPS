@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+
 import LostCard from "../../components/LostCard";
 import FoundCard from "../../components/FoundCard";
+import AdminPageSkeleton from "../../components/common/AdminPageSkeleton";
+
 import { useAuth } from "../../context/AuthContext";
 import useSocket from "../../hooks/useSocket";
 
@@ -12,6 +15,7 @@ const Items = () => {
   const [lost, setLost] = useState([]);
   const [found, setFound] = useState([]);
   const [activeTab, setActiveTab] = useState("lost");
+  const [loading, setLoading] = useState(true);
 
   const [filters, setFilters] = useState({
     search: "",
@@ -31,6 +35,8 @@ const Items = () => {
       setFound(foundRes.data);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,7 +44,6 @@ const Items = () => {
     fetchItems();
   }, []);
 
-  // 🔥 Live updates
   useEffect(() => {
     if (!socket) return;
 
@@ -79,14 +84,25 @@ const Items = () => {
           new Date(filters.date).toDateString()
         : true;
 
-      return nameMatch && locationMatch && statusMatch && dateMatch;
+      return (
+        nameMatch &&
+        locationMatch &&
+        statusMatch &&
+        dateMatch
+      );
     });
   };
+
+  if (loading) {
+    return <AdminPageSkeleton cards={6} />;
+  }
 
   return (
     <div className="container mt-4">
       <div className="mb-4">
-        <h3 className="fw-bold">Manage Items</h3>
+        <h3 className="fw-bold">
+          Manage Items
+        </h3>
       </div>
 
       <div className="row g-2 mb-4">
@@ -119,9 +135,15 @@ const Items = () => {
             value={filters.status}
             onChange={handleChange}
           >
-            <option value="">All Status</option>
-            <option value="resolved">Resolved</option>
-            <option value="unresolved">Unresolved</option>
+            <option value="">
+              All Status
+            </option>
+            <option value="resolved">
+              Resolved
+            </option>
+            <option value="unresolved">
+              Unresolved
+            </option>
           </select>
         </div>
 
@@ -139,18 +161,26 @@ const Items = () => {
       <div className="mb-4 d-flex gap-3">
         <button
           className={`btn ${
-            activeTab === "lost" ? "btn-dark" : "btn-outline-dark"
+            activeTab === "lost"
+              ? "btn-dark"
+              : "btn-outline-dark"
           }`}
-          onClick={() => setActiveTab("lost")}
+          onClick={() =>
+            setActiveTab("lost")
+          }
         >
           Lost Items
         </button>
 
         <button
           className={`btn ${
-            activeTab === "found" ? "btn-dark" : "btn-outline-dark"
+            activeTab === "found"
+              ? "btn-dark"
+              : "btn-outline-dark"
           }`}
-          onClick={() => setActiveTab("found")}
+          onClick={() =>
+            setActiveTab("found")
+          }
         >
           Found Items
         </button>
@@ -159,27 +189,49 @@ const Items = () => {
       <div className="row g-3">
         {activeTab === "lost" &&
           (filterItems(lost).length > 0 ? (
-            filterItems(lost).map((item) => (
-              <div key={item._id} className="col-md-4">
-                <LostCard item={{ ...item, title: item.item }} />
-              </div>
-            ))
+            filterItems(lost).map(
+              (item) => (
+                <div
+                  key={item._id}
+                  className="col-md-4"
+                >
+                  <LostCard
+                    item={{
+                      ...item,
+                      title: item.item,
+                    }}
+                  />
+                </div>
+              )
+            )
           ) : (
-            <p className="text-muted">No lost items found</p>
+            <p className="text-muted">
+              No lost items found
+            </p>
           ))}
 
         {activeTab === "found" &&
           (filterItems(found).length > 0 ? (
-            filterItems(found).map((item) => (
-              <div key={item._id} className="col-md-4">
-                <FoundCard
-                  item={{ ...item, title: item.item }}
-                  showClaimButton={false}
-                />
-              </div>
-            ))
+            filterItems(found).map(
+              (item) => (
+                <div
+                  key={item._id}
+                  className="col-md-4"
+                >
+                  <FoundCard
+                    item={{
+                      ...item,
+                      title: item.item,
+                    }}
+                    showClaimButton={false}
+                  />
+                </div>
+              )
+            )
           ) : (
-            <p className="text-muted">No found items found</p>
+            <p className="text-muted">
+              No found items found
+            </p>
           ))}
       </div>
     </div>

@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+
 import { useAuth } from "../../context/AuthContext";
 import useSocket from "../../hooks/useSocket";
+
+import AdminPageSkeleton from "../../components/common/AdminPageSkeleton";
 
 const Users = () => {
   const { user } = useAuth();
   const socket = useSocket(user?.id);
+  const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
-
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const fetchUsers = async () => {
     try {
@@ -24,6 +27,8 @@ const Users = () => {
       setUsers(filtered);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -31,7 +36,6 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  // 🔥 Live new signup updates
   useEffect(() => {
     if (!socket) return;
 
@@ -47,9 +51,17 @@ const Users = () => {
   }, [socket]);
 
   const filteredUsers = users.filter((u) =>
-    u.name.toLowerCase().includes(search.toLowerCase()) ||
-    u.email.toLowerCase().includes(search.toLowerCase())
+    u.name
+      .toLowerCase()
+      .includes(search.toLowerCase()) ||
+    u.email
+      .toLowerCase()
+      .includes(search.toLowerCase())
   );
+
+  if (loading) {
+    return <AdminPageSkeleton table />;
+  }
 
   return (
     <div className="container mt-4">
@@ -60,7 +72,9 @@ const Users = () => {
         className="form-control mt-3"
         placeholder="Search user..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) =>
+          setSearch(e.target.value)
+        }
       />
 
       <table className="table mt-3">
@@ -82,7 +96,9 @@ const Users = () => {
                   <button
                     className="btn btn-dark btn-sm"
                     onClick={() =>
-                      navigate(`/admin/users/${u._id}`)
+                      navigate(
+                        `/admin/users/${u._id}`
+                      )
                     }
                   >
                     View Profile

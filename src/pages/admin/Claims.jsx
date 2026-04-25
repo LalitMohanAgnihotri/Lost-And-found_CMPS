@@ -1,14 +1,19 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
-import AdminClaimCard from "../../components/admin/AdminClaimCard";
+import toast from "react-hot-toast";
+
 import { useAuth } from "../../context/AuthContext";
 import useSocket from "../../hooks/useSocket";
+
+import AdminClaimCard from "../../components/admin/AdminClaimCard";
+import AdminPageSkeleton from "../../components/common/AdminPageSkeleton";
 
 const Claims = () => {
   const { user } = useAuth();
   const socket = useSocket(user?.id);
 
   const [claims, setClaims] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [filters, setFilters] = useState({
     search: "",
@@ -22,6 +27,9 @@ const Claims = () => {
       setClaims(res.data);
     } catch (err) {
       console.log(err);
+      toast.error("Failed to load claims");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -29,7 +37,6 @@ const Claims = () => {
     fetchClaims();
   }, []);
 
-  // 🔥 Real-time updates
   useEffect(() => {
     if (!socket) return;
 
@@ -49,11 +56,21 @@ const Claims = () => {
   }, [socket]);
 
   const handleApprove = async (id) => {
-    await api.put(`/claim/${id}/approve`);
+    try {
+      await api.put(`/claim/${id}/approve`);
+      toast.success("Approved ✅");
+    } catch (err) {
+      toast.error("Failed to approve");
+    }
   };
 
   const handleReject = async (id) => {
-    await api.put(`/claim/${id}/reject`);
+    try {
+      await api.put(`/claim/${id}/reject`);
+      toast.error("Rejected ❌");
+    } catch (err) {
+      toast.error("Failed to reject");
+    }
   };
 
   const handleChange = (e) => {
@@ -65,8 +82,12 @@ const Claims = () => {
 
   const filteredClaims = claims.filter((c) => {
     const searchMatch =
-      c.item?.item?.toLowerCase().includes(filters.search.toLowerCase()) ||
-      c.user?.name?.toLowerCase().includes(filters.search.toLowerCase());
+      c.item?.item
+        ?.toLowerCase()
+        .includes(filters.search.toLowerCase()) ||
+      c.user?.name
+        ?.toLowerCase()
+        .includes(filters.search.toLowerCase());
 
     const statusMatch = filters.status
       ? c.status === filters.status
@@ -80,9 +101,15 @@ const Claims = () => {
     return searchMatch && statusMatch && dateMatch;
   });
 
+  if (loading) {
+    return <AdminPageSkeleton cards={6} />;
+  }
+
   return (
     <div className="container mt-4">
-      <h3 className="fw-bold mb-4">Claim Requests</h3>
+      <h3 className="fw-bold mb-4">
+        Claim Requests
+      </h3>
 
       <div className="row g-2 mb-4">
         <div className="col-md-4">
@@ -103,10 +130,18 @@ const Claims = () => {
             value={filters.status}
             onChange={handleChange}
           >
-            <option value="">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>
+            <option value="">
+              All Status
+            </option>
+            <option value="pending">
+              Pending
+            </option>
+            <option value="approved">
+              Approved
+            </option>
+            <option value="rejected">
+              Rejected
+            </option>
           </select>
         </div>
 
@@ -132,7 +167,9 @@ const Claims = () => {
             />
           ))
         ) : (
-          <p className="text-muted">No claims found</p>
+          <p className="text-muted">
+            No claims found
+          </p>
         )}
       </div>
     </div>

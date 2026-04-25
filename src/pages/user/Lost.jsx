@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchLostItems } from "../../api/lost.api.js";
 import LostCard from "../../components/LostCard.jsx";
+import CardSkeleton from "../../components/common/CardSkeleton.jsx";
 import "../../styles/lost.css";
 
 const Lost = () => {
@@ -13,16 +14,18 @@ const Lost = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p className="text-center">Loading...</p>;
-
   return (
     <div className="lost-container">
       <h2 className="page-title">Lost Items</h2>
 
       <div className="card-grid">
-        {lostItems.map((item) => (
-          <LostCard key={item._id} item={item} />
-        ))}
+        {loading
+          ? Array.from({ length: 6 }).map((_, i) => (
+              <CardSkeleton key={i} />
+            ))
+          : lostItems.map((item) => (
+              <LostCard key={item._id} item={item} />
+            ))}
       </div>
     </div>
   );

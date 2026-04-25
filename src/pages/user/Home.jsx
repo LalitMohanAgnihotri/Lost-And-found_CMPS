@@ -1,22 +1,39 @@
 import { useEffect, useState } from "react";
 import { fetchLostItems } from "../../api/lost.api";
 import { fetchFoundItems } from "../../api/found";
+
 import LostCard from "../../components/LostCard";
 import FoundCard from "../../components/FoundCard";
+import CardSkeleton from "../../components/common/CardSkeleton";
 
 const Home = () => {
   const [lost, setLost] = useState([]);
   const [found, setFound] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Lost items (no filter needed)
-    fetchLostItems().then((data) => setLost(data.slice(0, 3)));
+    const loadHomeData = async () => {
+      try {
+        const [lostData, foundData] = await Promise.all([
+          fetchLostItems(),
+          fetchFoundItems(),
+        ]);
 
-    // Found items → ONLY unresolved
-    fetchFoundItems().then((data) => {
-      const unresolvedFound = data.filter((item) => item.isResolved === false);
-      setFound(unresolvedFound.slice(0, 3));
-    });
+        setLost(lostData.slice(0, 3));
+
+        const unresolvedFound = foundData.filter(
+          (item) => item.isResolved === false
+        );
+
+        setFound(unresolvedFound.slice(0, 3));
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadHomeData();
   }, []);
 
   return (
@@ -44,20 +61,34 @@ const Home = () => {
       <h5 className="mt-5">Recent Found Items</h5>
 
       <div className="card-grid">
-        {found.length > 0 ? (
-          found.map((item) => <FoundCard key={item._id} item={item} />)
+        {loading ? (
+          Array.from({ length: 3 }).map((_, i) => (
+            <CardSkeleton key={i} />
+          ))
+        ) : found.length > 0 ? (
+          found.map((item) => (
+            <FoundCard key={item._id} item={item} />
+          ))
         ) : (
           <p className="text-muted">No unresolved found items yet.</p>
         )}
       </div>
-      
+
       <h5 className="mt-5">Recent Lost Items</h5>
+
       <div className="card-grid">
-        {lost.map((item) => (
-          <LostCard key={item._id} item={item} />
-        ))}
+        {loading ? (
+          Array.from({ length: 3 }).map((_, i) => (
+            <CardSkeleton key={i} />
+          ))
+        ) : lost.length > 0 ? (
+          lost.map((item) => (
+            <LostCard key={item._id} item={item} />
+          ))
+        ) : (
+          <p className="text-muted">No lost items yet.</p>
+        )}
       </div>
-      
     </>
   );
 };

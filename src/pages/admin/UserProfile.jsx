@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../api/axios";
+
 import ProfileView from "../../components/ProfileView";
+import AdminPageSkeleton from "../../components/common/AdminPageSkeleton";
 
 const UserProfile = () => {
   const { id } = useParams();
@@ -14,15 +16,29 @@ const UserProfile = () => {
   });
 
   const [activeTab, setActiveTab] = useState("lost");
+  const [loading, setLoading] = useState(true);
+
+  const fetchProfile = async () => {
+    try {
+      const res = await api.get(
+        `/admin/users/${id}`
+      );
+
+      setData(res.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchProfile();
   }, [id]);
 
-  const fetchProfile = async () => {
-    const res = await api.get(`/admin/users/${id}`);
-    setData(res.data);
-  };
+  if (loading) {
+    return <AdminPageSkeleton cards={3} />;
+  }
 
   return (
     <ProfileView

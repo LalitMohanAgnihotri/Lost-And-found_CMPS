@@ -1,10 +1,12 @@
+// Claim.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import api from "../../api/axios";
 import "../../styles/claim.css";
 
 const Claim = () => {
-  const { type, id } = useParams(); // lost | found
+  const { type, id } = useParams();
   const navigate = useNavigate();
 
   const [proofMessage, setProofMessage] = useState("");
@@ -12,6 +14,9 @@ const Claim = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (loading) return;
+
     setLoading(true);
 
     try {
@@ -26,13 +31,16 @@ const Claim = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        },
+        }
       );
 
-      alert("Claim submitted successfully ✅");
+      toast.success("Claim submitted successfully ✅");
       navigate(-1);
+
     } catch (err) {
-      alert(err.response?.data?.message || "Claim failed");
+      toast.error(
+        err.response?.data?.message || "Claim failed"
+      );
     } finally {
       setLoading(false);
     }
@@ -41,7 +49,9 @@ const Claim = () => {
   return (
     <div className="claim-container">
       <div className="claim-card">
-        <h2>Claim {type === "lost" ? "Lost" : "Found"} Item</h2>
+        <h2>
+          Claim {type === "lost" ? "Lost" : "Found"} Item
+        </h2>
 
         <form className="claim-form" onSubmit={handleSubmit}>
           <label>Proof / Description</label>
@@ -49,17 +59,23 @@ const Claim = () => {
           <textarea
             placeholder="Describe why this item belongs to you..."
             value={proofMessage}
-            onChange={(e) => setProofMessage(e.target.value)}
+            onChange={(e) =>
+              setProofMessage(e.target.value)
+            }
             required
+            disabled={loading}
           />
 
           <button type="submit" disabled={loading}>
-            {loading ? "Submitting..." : "Submit Claim"}
+            {loading
+              ? "Submitting..."
+              : "Submit Claim"}
           </button>
         </form>
 
         <p className="claim-info">
-          Please provide accurate information. False claims may be rejected.
+          Please provide accurate information.
+          False claims may be rejected.
         </p>
       </div>
     </div>

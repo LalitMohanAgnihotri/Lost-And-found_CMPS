@@ -1,6 +1,13 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+import {
+  Eye,
+  EyeOff,
+} from "lucide-react";
+import toast from "react-hot-toast";
 
 import { useAuth } from "../../context/AuthContext";
 import "../../styles/auth.css";
@@ -9,7 +16,11 @@ const Signup = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [loading, setLoading] =
+    useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -20,33 +31,58 @@ const Signup = () => {
   const handleChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
       const user = await signup(form);
 
+      toast.success(
+        "Signup successful"
+      );
+
       if (user.role === "ADMIN") {
-        navigate("/admin/dashboard", { replace: true });
+        navigate(
+          "/admin/dashboard",
+          { replace: true }
+        );
       } else {
-        navigate("/home", { replace: true });
+        navigate(
+          "/home",
+          { replace: true }
+        );
       }
     } catch (err) {
-      alert(err.response?.data?.message || "Signup failed");
+      toast.error(
+        err.response?.data
+          ?.message ||
+          "Signup failed"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="auth-container">
       <div className="auth-box">
-        <h2>Create Account </h2>
-        <p className="auth-subtitle">Join Lost & Found</p>
+        <h2>Create Account</h2>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <p className="auth-subtitle">
+          Join Lost & Found
+        </p>
+
+        <form
+          className="auth-form"
+          onSubmit={handleSubmit}
+        >
           <div className="input-group">
             <input
               type="text"
@@ -69,25 +105,48 @@ const Signup = () => {
 
           <div className="input-group password-group">
             <input
-              type={showPassword ? "text" : "password"}
+              type={
+                showPassword
+                  ? "text"
+                  : "password"
+              }
               name="password"
               placeholder="Password"
               onChange={handleChange}
               required
             />
+
             <span
               className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() =>
+                setShowPassword(
+                  !showPassword
+                )
+              }
             >
-              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              {showPassword ? (
+                <EyeOff size={18} />
+              ) : (
+                <Eye size={18} />
+              )}
             </span>
           </div>
 
-          <button type="submit">Sign Up</button>
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            {loading
+              ? "Creating account..."
+              : "Sign Up"}
+          </button>
         </form>
 
         <div className="auth-footer">
-          Already have an account? <Link to="/login">Login</Link>
+          Already have an account?{" "}
+          <Link to="/login">
+            Login
+          </Link>
         </div>
       </div>
     </div>

@@ -5,6 +5,8 @@ import redis from "../config/redis.js";
 
 import bcrypt from "bcryptjs";
 import { sendMail } from "../config/mail.config.js";
+import { io } from "../server.js";
+
 
 // OTP generator
 const generateOtp = () =>
@@ -43,6 +45,18 @@ export const signup = async (req, res) => {
       password,
     });
 
+    // 🔥 Emit to all admins
+    const admins = await User.find({ role: "ADMIN" });
+
+    for (const admin of admins) {
+      io.to(admin._id.toString()).emit("user_created", {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      });
+    }
+
     res.status(201).json({
       token: generateToken(user),
       user: {
@@ -52,6 +66,7 @@ export const signup = async (req, res) => {
         role: user.role,
       },
     });
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

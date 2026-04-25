@@ -1,6 +1,7 @@
 import Lost from "../models/Lost.js";
 import Notification from "../models/Notification.js";
 import { sendMail } from "../config/mail.config.js";
+import { io } from "../server.js";
 
 export const checkMatchAndNotify = async (foundItem) => {
   try {
@@ -18,19 +19,27 @@ export const checkMatchAndNotify = async (foundItem) => {
         foundItem.location.toLowerCase().trim();
 
       if (itemMatch && locationMatch) {
+        const message = `We found a match for your lost item "${lost.item}"`;
+
         const existingNotification = await Notification.findOne({
           user: lost.reportedBy._id,
-          message: `We found a match for your lost item "${lost.item}"`,
+          message,
         });
 
         if (existingNotification) continue;
 
-        await Notification.create({
+        const notif = await Notification.create({
           user: lost.reportedBy._id,
           title: "Match Found",
-          message: `We found a match for your lost item "${lost.item}"`,
+          message,
           type: "match",
         });
+
+        // 🔔 Real-time socket emit
+        io.to(lost.reportedBy._id.toString()).emit(
+          "new_notification",
+          notif
+        );
 
         await sendMail({
           to: lost.contactEmail,
@@ -43,7 +52,7 @@ export const checkMatchAndNotify = async (foundItem) => {
           `,
         });
 
-        console.log("✅ Match notification + email sent");
+        console.log("✅ Match notification + realtime alert + email sent");
       }
     }
   } catch (err) {

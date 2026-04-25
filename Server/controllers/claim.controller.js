@@ -24,6 +24,7 @@ export const getAllClaims = async (req, res) => {
     );
 
     res.json(updated);
+
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -52,7 +53,6 @@ export const createClaim = async (req, res) => {
       proofMessage,
     });
 
-    // Notify all admins
     const admins = await User.find({ role: "ADMIN" });
 
     for (const admin of admins) {
@@ -100,6 +100,11 @@ export const approveClaim = async (req, res) => {
       io.to(claim.user.toString()).emit("new_notification", notif);
     }
 
+    io.to(claim.user.toString()).emit("claim_updated", {
+      claimId: claim._id,
+      status: "approved",
+    });
+
     res.json({ message: "Approved" });
 
   } catch (err) {
@@ -126,6 +131,11 @@ export const rejectClaim = async (req, res) => {
     if (notif) {
       io.to(claim.user.toString()).emit("new_notification", notif);
     }
+
+    io.to(claim.user.toString()).emit("claim_updated", {
+      claimId: claim._id,
+      status: "rejected",
+    });
 
     res.json({ message: "Rejected" });
 

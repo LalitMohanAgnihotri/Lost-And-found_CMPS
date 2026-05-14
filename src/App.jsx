@@ -36,7 +36,7 @@ const Users = lazy(() => import("./pages/admin/Users"));
 const UserProfile = lazy(() => import("./pages/admin/UserProfile"));
 const Items = lazy(() => import("./pages/admin/Items"));
 
-// 🔥 Simple Loader
+// Simple Loader
 const PageLoader = () => (
   <div className="text-center py-5">
     <div className="spinner-border text-dark"></div>

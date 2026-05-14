@@ -1,8 +1,15 @@
 import express from "express";
 import cors from "cors";
+// import dotenv from "dotenv";
+
+// dotenv.config();
 
 // security
 import { securityMiddleware } from "./middlewares/security.middleware.js";
+import {
+  notFound,
+  errorHandler,
+} from "./middlewares/error.middleware.js";
 
 // register models
 import "./models/Users.js";
@@ -21,28 +28,85 @@ import notificationRoutes from "./routes/notification.routes.js";
 
 const app = express();
 
-// trust proxy (important on Render / Railway / Vercel proxy)
 app.set("trust proxy", 1);
 
-// middlewares
-app.use(cors());
-app.use(express.json());
+// Allowed origins from env
+const allowedOrigins = (
+  process.env.CLIENT_URLS || ""
+)
+  .split(",")
+  .map((url) => url.trim())
+  .filter(Boolean);
 
-// security middlewares
+app.use(
+  cors({
+    origin(origin, callback) {
+      // allow Postman / no-origin requests
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (
+        allowedOrigins.includes(origin)
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(
+        new Error(
+          "Not allowed by CORS"
+        )
+      );
+    },
+
+    credentials: true,
+
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "PATCH",
+    ],
+  })
+);
+
+app.use(
+  express.json({
+    limit: "1mb",
+  })
+);
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
 securityMiddleware(app);
 
-// health route
+// Health route
 app.get("/", (req, res) => {
-  res.json({ success: true, message: "API Running" });
+  res.json({
+    success: true,
+    message: "API Running",
+  });
 });
 
-// routes
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/lost", lostRoutes);
 app.use("/api/found", foundRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/claim", claimRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/notifications", notificationRoutes);
+app.use(
+  "/api/notifications",
+  notificationRoutes
+);
+
+// Error handlers (LAST)
+app.use(notFound);
+app.use(errorHandler);
 
 export default app;

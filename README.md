@@ -2,6 +2,8 @@
 
 A full-stack **Lost & Found Management System** built using the MERN stack, designed to help users report lost items, find matching items, and manage claims with notifications and admin moderation.
 
+Built with production-focused practices including validation, Redis caching/OTP, security middleware, protected routes, lazy loading, and admin analytics dashboard.
+
 ---
 
 # 🚀 Features
@@ -17,17 +19,24 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
   - Found items
   - Claim status (Pending / Approved / Rejected)
 
-### 🔐 Authentication
+### 🔐 Authentication & Security
 
 - JWT-based login/signup
 - Role-based access (USER / ADMIN)
+- Protected routes (frontend + backend)
+- Request validation using Zod
+- Rate limiting for auth / OTP / claims
+- Secure headers with Helmet
+- HPP protection
+- Controlled CORS allowlist
 
-### 🔑 Forgot Password 
+### 🔑 Forgot Password Flow
 
 - Email-based OTP verification
 - 6-digit OTP system
-- Reset password securely
-- Frontend + Backend integrated flow
+- OTP stored in Redis (Upstash)
+- Auto expiry using TTL
+- Secure password reset flow
 
 ---
 
@@ -104,6 +113,14 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
 
 ---
 
+## ⚡ Performance Optimizations
+
+- Lazy loaded routes
+- Debounced search inputs
+- Skeleton loaders
+- Better loading states
+- Optimized first page load
+
 # 🏗️ Tech Stack
 
 ## Frontend
@@ -119,13 +136,22 @@ A full-stack **Lost & Found Management System** built using the MERN stack, desi
 - Node.js
 - Express.js
 - MongoDB + Mongoose
+- Redis (Upstash)
+
+## Security
+
+- Helmet
+- HPP
+- Zod Validation
+- Express Rate Limit
 
 ## Tools
 
-- Cloudinary (image upload)
-- Multer (file handling)
-- Nodemailer (email service)
-- JWT (authentication)
+- Cloudinary
+- Multer
+- Nodemailer
+- JWT
+- Socket.IO
 
 ---
 
@@ -218,6 +244,7 @@ Create .env
 PORT=3000
 MONGO_URI=your_mongodb_url
 JWT_SECRET=your_secret
+CLIENT_URLS=http://localhost:5173
 
 EMAIL_USER=your_email
 EMAIL_PASS=your_app_password
@@ -226,6 +253,9 @@ CLOUD_NAME=your_cloudinary
 CLOUDINARY_API_KEY=your_key
 CLOUDINARY_API_SECRET=your_secret
 
+REDIS_URL=your_upstash_url
+USER_ID=optional_if_used
+
 node server.js
 
 3. Frontend Setup
@@ -233,21 +263,36 @@ cd Client
 npm install
 npm run dev
 
-🧪 Key Learnings
-Full MERN stack integration
-JWT authentication
-OTP-based password reset
-Email automation
-Notification system design
-UI/UX development
-Debugging real-world issues
+## 🧪 Key Learnings
+
+- Full MERN stack architecture
+- JWT authentication & role guards
+- Redis OTP workflow with TTL
+- Route protection
+- Real-time updates using Socket.IO
+- Backend security hardening
+- Request validation with Zod
+- File uploads with Cloudinary
+- Performance optimization in React
+- Production-ready project structuring
 
 
-🚀 Future Improvements
-Real-time notifications (Socket.IO)
-Advanced search filters
-Mobile responsiveness
-AI-based matching
+## 🚀 Future Improvements
+
+- Full mobile responsiveness audit
+- Pagination for large datasets
+- Advanced filters & sorting
+- Better admin analytics
+- Search result caching with Redis
+- Realtime notifications for all events
+- UI polish & animations
+
+## 🌐 Deployment
+
+Frontend: Vercel  
+Backend: Render / Railway / Node Server  
+Database: MongoDB Atlas  
+Redis: Upstash
 
 👨‍💻 Author
 Lalit Mohan Agnihotri

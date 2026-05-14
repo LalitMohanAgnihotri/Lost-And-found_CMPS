@@ -6,12 +6,17 @@ import api from "../../api/axios";
 import LostCard from "../../components/LostCard";
 import FoundCard from "../../components/FoundCard";
 import CardSkeleton from "../../components/common/CardSkeleton";
+import Claim from "./Claim";
 
 import "../../styles/lost.css";
 
 const Search = () => {
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
+
+  const params = new URLSearchParams(
+    location.search
+  );
+
   const query = params.get("q") || "";
 
   const [searchTerm, setSearchTerm] =
@@ -20,9 +25,18 @@ const Search = () => {
   const [debouncedSearch, setDebouncedSearch] =
     useState(query);
 
-  const [lostItems, setLostItems] = useState([]);
-  const [foundItems, setFoundItems] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [lostItems, setLostItems] =
+    useState([]);
+
+  const [foundItems, setFoundItems] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(false);
+
+  // CLAIM STATE
+  const [selectedItem, setSelectedItem] =
+    useState(null);
 
   // Sync URL query to state
   useEffect(() => {
@@ -37,9 +51,11 @@ const Search = () => {
       );
     }, 400);
 
-    return () => clearTimeout(timer);
+    return () =>
+      clearTimeout(timer);
   }, [searchTerm]);
 
+  // FETCH SEARCH DATA
   useEffect(() => {
     if (!debouncedSearch) {
       setLostItems([]);
@@ -58,6 +74,7 @@ const Search = () => {
                 debouncedSearch
               )}`
             ),
+
             api.get(
               `/found?search=${encodeURIComponent(
                 debouncedSearch
@@ -74,7 +91,6 @@ const Search = () => {
           foundRes.data.data ||
             foundRes.data
         );
-
       } catch (err) {
         console.error(err);
       } finally {
@@ -85,6 +101,7 @@ const Search = () => {
     fetchData();
   }, [debouncedSearch]);
 
+  // EMPTY QUERY
   if (!query.trim()) {
     return (
       <div className="lost-container">
@@ -99,10 +116,20 @@ const Search = () => {
     );
   }
 
+  // SHOW CLAIM PAGE
+  if (selectedItem) {
+    return (
+      <Claim
+        item={selectedItem}
+      />
+    );
+  }
+
   return (
     <div className="lost-container">
       <h2 className="page-title">
-        Search Results for "{query}"
+        Search Results for "
+        {query}"
       </h2>
 
       {loading ? (
@@ -115,13 +142,16 @@ const Search = () => {
         </div>
       ) : (
         <>
+          {/* NO RESULTS */}
           {lostItems.length === 0 &&
-            foundItems.length === 0 && (
+            foundItems.length ===
+              0 && (
               <p className="text-center">
                 No items found
               </p>
             )}
 
+          {/* LOST ITEMS */}
           {lostItems.length > 0 && (
             <>
               <h3>Lost Items</h3>
@@ -142,6 +172,7 @@ const Search = () => {
             </>
           )}
 
+          {/* FOUND ITEMS */}
           {foundItems.length > 0 && (
             <>
               <h3 className="mt-4">
@@ -157,6 +188,11 @@ const Search = () => {
                         item.id
                       }
                       item={item}
+                      onClaim={() =>
+                        setSelectedItem(
+                          item
+                        )
+                      }
                     />
                   )
                 )}

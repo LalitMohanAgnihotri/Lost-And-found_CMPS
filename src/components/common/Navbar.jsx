@@ -2,13 +2,17 @@ import React, {
   useState,
   useEffect,
 } from "react";
+
 import {
   Link,
   useNavigate,
+  useLocation,
 } from "react-router-dom";
+
 import { Bell } from "lucide-react";
 
 import { useAuth } from "../../context/AuthContext";
+
 import Profile from "../common/ProfileDropdown.";
 import NotificationDropdown from "./NotificationDropdown";
 
@@ -25,9 +29,13 @@ const Navbar = ({
   toggleSidebar,
   isOpen,
 }) => {
-  const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] =
+  const [search, setSearch] =
     useState("");
+
+  const [
+    debouncedSearch,
+    setDebouncedSearch,
+  ] = useState("");
 
   const [showNotif, setShowNotif] =
     useState(false);
@@ -36,11 +44,14 @@ const Navbar = ({
     useState(false);
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+
   const { socket } = useAuth();
 
   const isAdmin = type === "admin";
 
-  // Initial notifications
+  // INITIAL NOTIFICATIONS
   useEffect(() => {
     const fetchNotif = async () => {
       try {
@@ -51,7 +62,9 @@ const Navbar = ({
           (n) => !n.read
         );
 
-        setHasNotif(unread.length > 0);
+        setHasNotif(
+          unread.length > 0
+        );
       } catch (err) {
         console.log(err);
       }
@@ -60,7 +73,7 @@ const Navbar = ({
     fetchNotif();
   }, []);
 
-  // Realtime notifications
+  // REALTIME NOTIFICATIONS
   useEffect(() => {
     if (!socket) return;
 
@@ -78,15 +91,16 @@ const Navbar = ({
     };
   }, [socket]);
 
-  // Mark read
+  // MARK READ
   useEffect(() => {
     if (showNotif) {
       markAllRead();
+
       setHasNotif(false);
     }
   }, [showNotif]);
 
-  // Debounce search
+  // DEBOUNCE SEARCH
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(
@@ -98,17 +112,22 @@ const Navbar = ({
       clearTimeout(timer);
   }, [search]);
 
-  // Auto navigate after debounce
+  // AUTO SEARCH ONLY ON SEARCH PAGE
   useEffect(() => {
     if (
       debouncedSearch &&
       showSearch &&
-      !isAdmin
+      !isAdmin &&
+      location.pathname ===
+        "/search"
     ) {
       navigate(
         `/search?q=${encodeURIComponent(
           debouncedSearch
-        )}`
+        )}`,
+        {
+          replace: true,
+        }
       );
     }
   }, [
@@ -116,8 +135,10 @@ const Navbar = ({
     navigate,
     showSearch,
     isAdmin,
+    location.pathname,
   ]);
 
+  // ENTER SEARCH
   const handleEnter = (e) => {
     if (
       e.key === "Enter" &&

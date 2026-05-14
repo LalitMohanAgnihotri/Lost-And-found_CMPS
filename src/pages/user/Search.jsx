@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import { useLocation } from "react-router-dom";
 
 import api from "../../api/axios";
@@ -12,11 +17,15 @@ import "../../styles/lost.css";
 const Search = () => {
   const location = useLocation();
 
-  const params = new URLSearchParams(
-    location.search
-  );
+  // MEMOIZED QUERY
+  const query = useMemo(() => {
+    const params =
+      new URLSearchParams(
+        location.search
+      );
 
-  const query = params.get("q") || "";
+    return params.get("q") || "";
+  }, [location.search]);
 
   const [lostItems, setLostItems] =
     useState([]);

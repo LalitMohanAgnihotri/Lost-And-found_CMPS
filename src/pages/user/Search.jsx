@@ -6,7 +6,6 @@ import api from "../../api/axios";
 import LostCard from "../../components/LostCard";
 import FoundCard from "../../components/FoundCard";
 import CardSkeleton from "../../components/common/CardSkeleton";
-import Claim from "./Claim";
 
 import "../../styles/lost.css";
 
@@ -19,12 +18,6 @@ const Search = () => {
 
   const query = params.get("q") || "";
 
-  const [searchTerm, setSearchTerm] =
-    useState(query);
-
-  const [debouncedSearch, setDebouncedSearch] =
-    useState(query);
-
   const [lostItems, setLostItems] =
     useState([]);
 
@@ -34,30 +27,9 @@ const Search = () => {
   const [loading, setLoading] =
     useState(false);
 
-  // CLAIM STATE
-  const [selectedItem, setSelectedItem] =
-    useState(null);
-
-  // Sync URL query to state
-  useEffect(() => {
-    setSearchTerm(query);
-  }, [query]);
-
-  // Debounce query
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(
-        searchTerm.trim()
-      );
-    }, 400);
-
-    return () =>
-      clearTimeout(timer);
-  }, [searchTerm]);
-
   // FETCH SEARCH DATA
   useEffect(() => {
-    if (!debouncedSearch) {
+    if (!query.trim()) {
       setLostItems([]);
       setFoundItems([]);
       return;
@@ -71,13 +43,13 @@ const Search = () => {
           await Promise.all([
             api.get(
               `/lost?search=${encodeURIComponent(
-                debouncedSearch
+                query
               )}`
             ),
 
             api.get(
               `/found?search=${encodeURIComponent(
-                debouncedSearch
+                query
               )}`
             ),
           ]);
@@ -99,7 +71,7 @@ const Search = () => {
     };
 
     fetchData();
-  }, [debouncedSearch]);
+  }, [query]);
 
   // EMPTY QUERY
   if (!query.trim()) {
@@ -110,18 +82,10 @@ const Search = () => {
         </h2>
 
         <p className="text-center">
-          Type something in the search bar
+          Type something in the search
+          bar
         </p>
       </div>
-    );
-  }
-
-  // SHOW CLAIM PAGE
-  if (selectedItem) {
-    return (
-      <Claim
-        item={selectedItem}
-      />
     );
   }
 
@@ -188,11 +152,6 @@ const Search = () => {
                         item.id
                       }
                       item={item}
-                      onClaim={() =>
-                        setSelectedItem(
-                          item
-                        )
-                      }
                     />
                   )
                 )}

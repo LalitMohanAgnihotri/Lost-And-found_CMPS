@@ -376,3 +376,38 @@
     gap: 6px;
   }
 }
+/* MOBILE FIX */
+@media (max-width: 576px) {
+  .navbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .nav-left {
+    overflow: hidden;
+  }
+
+  .brand {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .brand-text {
+    display: flex !important;
+    font-size: 14px;
+    white-space: nowrap;
+
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .nav-right {
+    flex-shrink: 0;
+  }
+}
+
+/* EXTRA SMALL */
+@media (max-width: 420px) {
+  .brand-text {
+    font-size: 12px;
+  }
+}

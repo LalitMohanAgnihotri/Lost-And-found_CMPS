@@ -1,27 +1,28 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendMail = async ({ to, subject, html }) => {
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false, // ✅ FIX
-      },
-    });
-
-    const info = await transporter.sendMail({
-      from: `"Lost & Found" <${process.env.EMAIL_USER}>`,
+    const { data, error } = await resend.emails.send({
+      from: `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM}>`,
       to,
       subject,
       html,
     });
 
-    console.log("📧 Email sent:", info.messageId);
-  } catch (error) {
-    console.error("❌ Email error:", error.message);
+    if (error) {
+      console.error(error);
+      throw error;
+    }
+
+    console.log("✅ Email Sent");
+    console.log(data);
+
+    return data;
+  } catch (err) {
+    console.error("❌ Mail Error");
+    console.error(err);
+    throw err;
   }
 };

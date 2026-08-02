@@ -4,12 +4,23 @@ dotenv.config();
 const requiredEnv = [
   "PORT",
   "CLIENT_URLS",
-  "EMAIL_PASS",
-  "EMAIL_USER",
+
+  // Resend
+"RESEND_API_KEY",
+
+// Email sender
+"EMAIL_FROM",
+"EMAIL_FROM_NAME",
+
+  // Cloudinary
   "CLOUDINARY_API_SECRET",
   "CLOUDINARY_API_KEY",
   "CLOUD_NAME",
+
+  // JWT
   "JWT_SECRET",
+
+  // Other
   "USER_ID",
   "REDIS_URL",
   "MONGO_URI",

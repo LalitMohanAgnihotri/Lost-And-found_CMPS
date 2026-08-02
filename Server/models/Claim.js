@@ -7,7 +7,6 @@ const claimSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
     itemId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
